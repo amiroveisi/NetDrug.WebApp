@@ -264,7 +264,7 @@ class NewDrug extends Component
             IsLoading : true
         });
         let thisObject = this;
-        fetch(`${ConstantValues.WebApiBaseUrl}/api/crawler/drug/CreateNew`,
+        fetch(`${ConstantValues.WebApiBaseUrl}/api/crawler/medicalproduct/CreateNew`,
         {
             method : 'POST',
             headers: {

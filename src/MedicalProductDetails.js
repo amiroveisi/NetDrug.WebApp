@@ -29,7 +29,7 @@ class NewDrug extends Component
         });
         let thisObject = this;
         
-        fetch(`${ConstantValues.WebApiBaseUrl}/api/crawler/drug/get/${params.drugId}`,
+        fetch(`${ConstantValues.WebApiBaseUrl}/api/crawler/medicalproduct/get/${params.drugId}`,
         {
             method : "GET",
             headers:{
