@@ -40,7 +40,7 @@ class TopMenu extends Component
     OnDrugMenuCicked(event)
     {
       console.log("drug menu clicked");
-      window.location.href = "/drugs/list";
+      window.location.href = "/medicalproducts/list";
     }
     OnHomeMenuClicked(event)
     {

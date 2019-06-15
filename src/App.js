@@ -5,10 +5,10 @@ import Home from './Home';
 import '../node_modules/@blueprintjs/table/lib/css/table.css'
 import './App.css';
 import TopMenu from './TopMenu';
-import DrugsGrid from './DrugsGrid';
-import NewDrug from './NewDrug';
-import EditDrug from './EditDrug';
-import DrugDetails from './DrugDetails';
+import MedicalProductsGrid from './MedicalProductsGrid';
+import NewMedicalProduct from './NewMedicalProduct';
+import EditMedicalProduct from './EditMedicalProduct';
+import MedicalProductDetails from './MedicalProductDetails';
 
 class App extends Component {
 //   cellRenderer(rowIndex){
@@ -44,10 +44,10 @@ constructor(props){
       <Switch>
         <Route exact path='/' component={Home}/>
         <Route path='/login' render={props => <Login {...props} extra={loginProps}/> }/>
-        <Route path='/drugs/list' component={DrugsGrid}/>
-        <Route path='/drugs/new' component={NewDrug}/>
-        <Route path='/drugs/edit/:drugId' component={EditDrug}/>
-        <Route path='/drugs/details/:drugId' component={DrugDetails}/>
+        <Route path='/medicalproducts/list' component={MedicalProductsGrid}/>
+        <Route path='/medicalproducts/new' component={NewMedicalProduct}/>
+        <Route path='/medicalproducts/edit/:drugId' component={EditMedicalProduct}/>
+        <Route path='/medicalproducts/details/:drugId' component={MedicalProductDetails}/>
       </Switch>
     </body>
   
