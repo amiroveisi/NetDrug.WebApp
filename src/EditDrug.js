@@ -3,7 +3,7 @@ import {Button, FormGroup, ControlGroup, TextArea, FileInput} from '@blueprintjs
 import { Redirect } from 'react-router-dom';
 import * as ConstantValues from './Constants';
 import { getBase64 } from './Utilities/FileHelper';
-import { MedicalProduct } from './Models/MedicalProduct';
+import { Drug } from './Models/Drug';
 
 class NewDrug extends Component
 {
@@ -26,7 +26,7 @@ class NewDrug extends Component
         this.OnCancelButtonClicked = this.OnCancelButtonClicked.bind(this);
         this.OnImageSelected = this.OnImageSelected.bind(this);
         this.state = {
-                Data: new MedicalProduct(),
+                Data: new Drug(),
                 IsCanceled : false,
                 IsLoading : false
             }
@@ -73,7 +73,7 @@ class NewDrug extends Component
     render(){
         if(this.state.IsCanceled || this.state.SavedSuccessfuly)
         {
-            return <Redirect to="/medicalproducts/list"/>
+            return <Redirect to="/drug/list"/>
         }
         if(this.state.IsLoading)
         {

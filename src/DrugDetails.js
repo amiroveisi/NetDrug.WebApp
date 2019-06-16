@@ -2,7 +2,7 @@ import React , {Component} from 'react';
 import {Text, Button, FormGroup, ControlGroup, TextArea} from '@blueprintjs/core';
 import { Redirect } from 'react-router-dom';
 import * as ConstantValues from './Constants';
-import { MedicalProduct } from './Models/MedicalProduct';
+import { MedicalProduct } from './Models/Drug';
 
 class NewDrug extends Component
 {
@@ -12,7 +12,7 @@ class NewDrug extends Component
         this.drugId = '';
         this.OnEditButtonClicked = this.OnEditButtonClicked.bind(this);
         this.state = {
-                Data: new MedicalProduct(),
+                Data: new Drug(),
                 IsCanceled : false,
                 IsLoading : false,
                 EditButtonClicked : false
@@ -60,11 +60,11 @@ class NewDrug extends Component
     render(){
         if(this.state.IsCanceled)
         {
-            return <Redirect to="/medicalproducts/list"/>
+            return <Redirect to="/drug/list"/>
         }
         if(this.state.EditButtonClicked)
         {
-            let url = `/medicalproducts/edit/${this.drugId}`;
+            let url = `/drug/edit/${this.drugId}`;
             return (<Redirect to={url}/>);
         }
         if(this.state.IsLoading)

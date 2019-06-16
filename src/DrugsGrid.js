@@ -60,11 +60,11 @@ class DrugsGrid extends Component
         console.log("rendering");
         if(this.state.AddNewDrugClicked)
         {
-            return (<Redirect to="/medicalproducts/new"/>);
+            return (<Redirect to="/drug/new"/>);
         }
         if(this.state.EditDrugClicked)
         {
-            let url = `/medicalproducts/edit/${this.SelectedId}`;
+            let url = `/drug/edit/${this.SelectedId}`;
             return (<Redirect to={url}/>);
         }
         if(this.state.IsLoading)
@@ -73,7 +73,7 @@ class DrugsGrid extends Component
         }
         if(this.state.DetailsButtonClicked)
         {
-            let url = `/medicalproducts/details/${this.SelectedId}`;
+            let url = `/drug/details/${this.SelectedId}`;
             return (<Redirect to={url}/>);
         }
         if(this.state.LoadingFailed)
