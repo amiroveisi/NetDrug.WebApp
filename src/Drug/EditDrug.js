@@ -1,9 +1,9 @@
 import React , {Component} from 'react';
 import {Button, FormGroup, ControlGroup, TextArea, FileInput} from '@blueprintjs/core';
 import { Redirect } from 'react-router-dom';
-import * as ConstantValues from './Constants';
-import { getBase64 } from './Utilities/FileHelper';
-import { Drug } from './Models/Drug';
+import * as ConstantValues from '../Constants';
+import { getBase64 } from '../Utilities/FileHelper';
+import { Drug } from '../Models/Drug';
 
 class NewDrug extends Component
 {

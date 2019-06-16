@@ -1,15 +1,15 @@
 import React , {Component} from 'react';
 import { ColumnDirective, ColumnsDirective, Filter, GridComponent, Group, Inject, Page, PageSettingsModel, Sort } from '@syncfusion/ej2-react-grids';
-import * as ConstantValues from './Constants';
-import '../node_modules/@syncfusion/ej2-base/styles/bootstrap.css';  
-import '../node_modules/@syncfusion/ej2-buttons/styles/bootstrap.css';  
-import '../node_modules/@syncfusion/ej2-calendars/styles/bootstrap.css';  
-import '../node_modules/@syncfusion/ej2-dropdowns/styles/bootstrap.css';  
-import '../node_modules/@syncfusion/ej2-inputs/styles/bootstrap.css';  
-import '../node_modules/@syncfusion/ej2-navigations/styles/bootstrap.css';
-import '../node_modules/@syncfusion/ej2-popups/styles/bootstrap.css';
-import '../node_modules/@syncfusion/ej2-splitbuttons/styles/bootstrap.css';
-import "../node_modules/@syncfusion/ej2-react-grids/styles/bootstrap.css";
+import * as ConstantValues from '../Constants';
+import '../../node_modules/@syncfusion/ej2-base/styles/bootstrap.css';  
+import '../../node_modules/@syncfusion/ej2-buttons/styles/bootstrap.css';  
+import '../../node_modules/@syncfusion/ej2-calendars/styles/bootstrap.css';  
+import '../../node_modules/@syncfusion/ej2-dropdowns/styles/bootstrap.css';  
+import '../../node_modules/@syncfusion/ej2-inputs/styles/bootstrap.css';  
+import '../../node_modules/@syncfusion/ej2-navigations/styles/bootstrap.css';
+import '../../node_modules/@syncfusion/ej2-popups/styles/bootstrap.css';
+import '../../node_modules/@syncfusion/ej2-splitbuttons/styles/bootstrap.css';
+import "../../node_modules/@syncfusion/ej2-react-grids/styles/bootstrap.css";
 import {Button} from '@blueprintjs/core';
 import { Redirect } from 'react-router-dom';
 

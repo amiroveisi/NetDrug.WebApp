@@ -5,10 +5,10 @@ import Home from './Home';
 import '../node_modules/@blueprintjs/table/lib/css/table.css'
 import './App.css';
 import TopMenu from './TopMenu';
-import DrugsGrid from './DrugsGrid';
-import NewDrug from './NewDrug';
-import EditDrug from './EditDrug';
-import DrugDetails from './DrugDetails';
+import DrugsGrid from './Drug/DrugsGrid';
+import NewDrug from './Drug/NewDrug';
+import EditDrug from './Drug/EditDrug';
+import DrugDetails from './Drug/DrugDetails';
 
 class App extends Component {
 //   cellRenderer(rowIndex){
