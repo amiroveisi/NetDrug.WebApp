@@ -106,7 +106,7 @@ class DrugsGrid extends Component
     LoadDrugs()
     {
         let thisObject = this;
-        fetch(`${ConstantValues.WebApiBaseUrl}/${ConstantValues.MedicalProductGetAllApi}`,
+        fetch(`${ConstantValues.WebApiBaseUrl}/${ConstantValues.DrugGetAllApi}`,
         {
             method : "GET",
             headers:{

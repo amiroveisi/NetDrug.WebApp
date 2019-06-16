@@ -1,7 +1,11 @@
 // export const WebApiBaseUrl = 'http://netdrug.ir';
 export const LoggedInEvent = 'loggedIn';
 export const WebApiBaseUrl = 'http://localhost:15847';
-export const MedicalProductUpdateApi = 'api/crawler/drug/update';
-export const MedicalProductGetApi = 'api/crawler/drug/get';
-export const MedicalProductGetAllApi = 'api/crawler/drug/getall';
-export const MedicalProductNewApi = 'api/crawler/drug/CreateNew';
+export const DrugUpdateApi = 'api/crawler/drug/update';
+export const DrugGetApi = 'api/crawler/drug/get';
+export const DrugGetAllApi = 'api/crawler/drug/getall';
+export const DrugNewApi = 'api/crawler/drug/CreateNew';
+export const MedicalProductUpdateApi = 'api/crawler/medicalproduct/update';
+export const MedicalProductGetApi = 'api/crawler/medicalproduct/get';
+export const MedicalProductGetAllApi = 'api/crawler/medicalproduct/getall';
+export const MedicalProductNewApi = 'api/crawler/medicalproduct/CreateNew';

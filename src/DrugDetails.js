@@ -2,7 +2,7 @@ import React , {Component} from 'react';
 import {Text, Button, FormGroup, ControlGroup, TextArea} from '@blueprintjs/core';
 import { Redirect } from 'react-router-dom';
 import * as ConstantValues from './Constants';
-import { MedicalProduct } from './Models/Drug';
+import { Drug } from './Models/Drug';
 
 class NewDrug extends Component
 {
@@ -29,7 +29,7 @@ class NewDrug extends Component
         });
         let thisObject = this;
         
-        fetch(`${ConstantValues.WebApiBaseUrl}/${ConstantValues.MedicalProductGetApi}/${params.drugId}`,
+        fetch(`${ConstantValues.WebApiBaseUrl}/${ConstantValues.DrugGetApi}/${params.drugId}`,
         {
             method : "GET",
             headers:{

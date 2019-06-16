@@ -1,4 +1,4 @@
-export class MedicalProduct
+export class Drug
 {
     constructor(args)
     {

@@ -41,7 +41,7 @@ class NewDrug extends Component
         });
         let thisObject = this;
         
-        fetch(`${ConstantValues.WebApiBaseUrl}/${ConstantValues.MedicalProductGetApi}/${params.drugId}`,
+        fetch(`${ConstantValues.WebApiBaseUrl}/${ConstantValues.DrugGetApi}/${params.drugId}`,
         {
             method : "GET",
             headers:{
@@ -313,7 +313,7 @@ class NewDrug extends Component
             IsLoading : true
         });
         let thisObject = this;
-        fetch(`${ConstantValues.WebApiBaseUrl}/${ConstantValues.MedicalProductUpdateApi}`,
+        fetch(`${ConstantValues.WebApiBaseUrl}/${ConstantValues.DrugUpdateApi}`,
         {
             method : 'POST',
             headers: {
