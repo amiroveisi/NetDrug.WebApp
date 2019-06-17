@@ -9,6 +9,8 @@ import DrugsGrid from './Drug/DrugsGrid';
 import NewDrug from './Drug/NewDrug';
 import EditDrug from './Drug/EditDrug';
 import DrugDetails from './Drug/DrugDetails';
+import MedicalProductsGrid from './MedicalProduct/MedicalProductsGrid';
+import NewMedicalProduct from './MedicalProduct/NewMedicalProduct';
 
 class App extends Component {
 //   cellRenderer(rowIndex){
@@ -48,6 +50,8 @@ constructor(props){
         <Route path='/drug/new' component={NewDrug}/>
         <Route path='/drug/edit/:drugId' component={EditDrug}/>
         <Route path='/drug/details/:drugId' component={DrugDetails}/>
+        <Route path='/medicalproduct/new' component={NewMedicalProduct}/>
+        <Route path='/medicalproduct/list' component={MedicalProductsGrid}/>
       </Switch>
     </body>
   
