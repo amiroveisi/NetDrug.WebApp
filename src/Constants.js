@@ -1,6 +1,6 @@
-// export const WebApiBaseUrl = 'http://netdrug.ir';
+export const WebApiBaseUrl = 'http://www.netdrug.ir';
 export const LoggedInEvent = 'loggedIn';
-export const WebApiBaseUrl = 'http://localhost:15847';
+// export const WebApiBaseUrl = 'http://localhost:15847';
 export const DrugUpdateApi = 'api/crawler/drug/update';
 export const DrugGetApi = 'api/crawler/drug/get';
 export const DrugGetAllApi = 'api/crawler/drug/getall';

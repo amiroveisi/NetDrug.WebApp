@@ -11,7 +11,8 @@ import EditDrug from './Drug/EditDrug';
 import DrugDetails from './Drug/DrugDetails';
 import MedicalProductsGrid from './MedicalProduct/MedicalProductsGrid';
 import NewMedicalProduct from './MedicalProduct/NewMedicalProduct';
-
+import MedicalProductEdit from './MedicalProduct/MedicalProductEdit'
+import styles from './Css/netdrug.css';
 class App extends Component {
 //   cellRenderer(rowIndex){
 //     return (<Cell>{(rowIndex * 10).toFixed(2)}</Cell>);
@@ -35,6 +36,7 @@ constructor(props){
           <link href="https://unpkg.com/@blueprintjs/core@^3.0.0/lib/css/blueprint.css" rel="stylesheet" />
           <link href="https://unpkg.com/@blueprintjs/icons@^3.0.0/lib/css/blueprint-icons.css" 
           rel="stylesheet" />
+        
           <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossOrigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossOrigin="anonymous"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossOrigin="anonymous"></script>
@@ -45,13 +47,14 @@ constructor(props){
       <TopMenu/>
       <Switch>
         <Route exact path='/' component={Home}/>
-        <Route path='/login' render={props => <Login {...props} extra={loginProps}/> }/>
+        <Route path='/login/' component={Login} />
         <Route path='/drug/list' component={DrugsGrid}/>
         <Route path='/drug/new' component={NewDrug}/>
         <Route path='/drug/edit/:drugId' component={EditDrug}/>
         <Route path='/drug/details/:drugId' component={DrugDetails}/>
         <Route path='/medicalproduct/new' component={NewMedicalProduct}/>
         <Route path='/medicalproduct/list' component={MedicalProductsGrid}/>
+        <Route path='/medicalproduct/edit/:productId' component={MedicalProductEdit}/>
       </Switch>
     </body>
   

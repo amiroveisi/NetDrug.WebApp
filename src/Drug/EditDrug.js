@@ -4,6 +4,7 @@ import { Redirect } from 'react-router-dom';
 import * as ConstantValues from '../Constants';
 import { getBase64 } from '../Utilities/FileHelper';
 import { Drug } from '../Models/Drug';
+import AuthenticationService from '../AuthenticationService';
 
 class NewDrug extends Component
 {
@@ -45,7 +46,8 @@ class NewDrug extends Component
         {
             method : "GET",
             headers:{
-               'Content-Type' : 'text/plain; charset=utf-8'
+               'Content-Type' : 'text/plain; charset=utf-8',
+               'Authorization' : `Bearer ${AuthenticationService.GetAuthToken()}`
             }
             }).then(response => {
                return response.text();
@@ -91,47 +93,47 @@ class NewDrug extends Component
         return (
           
            
-            <div className="m-5">
+            <div className="m-5 col-10">
                 <ControlGroup vertical={true}>
                     <FormGroup label="Generic Farsi Name:" labelFor="text-input">
-                        <input type="text" value={this.state.Data.GenericNameFarsi} onChange={this.OnGenericNameFarsiChanged}/>
+                        <input type="text" className="col-8" value={this.state.Data.GenericNameFarsi} onChange={this.OnGenericNameFarsiChanged}/>
                     </FormGroup>
                     <FormGroup label="Generic English Name:" labelFor="text-input">
-                        <input type="text" value={this.state.Data.GenericNameEnglish} onChange={this.OnGenericNameEnglishChanged}/>
+                        <input type="text" className="col-8" value={this.state.Data.GenericNameEnglish} onChange={this.OnGenericNameEnglishChanged}/>
                     </FormGroup>
                     <FormGroup label="Martindel Category:" labelFor="text-input">
-                        <input type="text" value={this.state.Data.MartindelCategory} onChange={this.OnMartindelCategoryChanged}/>
+                        <input type="text" className="col-8" value={this.state.Data.MartindelCategory} onChange={this.OnMartindelCategoryChanged}/>
                     </FormGroup>
                     <FormGroup label="Medical Category:" labelFor="text-input">
-                        <input type="text" value={this.state.Data.MedicalCategory} onChange={this.OnMedicalCategoryChanged}/>
+                        <input type="text" className="col-8" value={this.state.Data.MedicalCategory} onChange={this.OnMedicalCategoryChanged}/>
                     </FormGroup>
                     <FormGroup label="Use Cases:" labelFor="text-input">
-                        <TextArea growVertically={true} value={this.state.Data.UseCases} onChange={this.OnUseCasesChanged}/>
+                        <TextArea growVertically={true} className="col-8" value={this.state.Data.UseCases} onChange={this.OnUseCasesChanged}/>
                     </FormGroup>
                     <FormGroup label="Mechanism:" labelFor="text-input">
-                        <TextArea growVertically={true} value={this.state.Data.Mechanism} onChange={this.OnMechanismChanged}/>
+                        <TextArea growVertically={true} className="col-8" value={this.state.Data.Mechanism} onChange={this.OnMechanismChanged}/>
                     </FormGroup>
                     <FormGroup label="Pharmacokinetics:" labelFor="text-input">
-                        <TextArea growVertically={true} value={this.state.Data.Pharmacokinetics} onChange={this.OnPharmacokineticsChanged}/>
+                        <TextArea className="col-8" growVertically={true} value={this.state.Data.Pharmacokinetics} onChange={this.OnPharmacokineticsChanged}/>
                     </FormGroup>
                     <FormGroup label="Forbidden Use Cases:" labelFor="text-input">
-                        <TextArea growVertically={true} value={this.state.Data.ForbiddenUseCases} onChange={this.OnForbiddenUseCases}/>
+                        <TextArea growVertically={true} className="col-8" value={this.state.Data.ForbiddenUseCases} onChange={this.OnForbiddenUseCases}/>
                     </FormGroup>
                     <FormGroup label="Medical Conflicts:" labelFor="text-input">
-                        <TextArea growVertically={true} value={this.state.Data.MedicalConflicts} onChange={this.OnMedicalConflictsChaged}/>
+                        <TextArea growVertically={true} className="col-8" value={this.state.Data.MedicalConflicts} onChange={this.OnMedicalConflictsChaged}/>
                     </FormGroup>
                     <FormGroup label="Warnings:" labelFor="text-input">
-                        <TextArea growVertically={true} value={this.state.Data.Warnings} onChange={this.OnWraningsChanged}/>
+                        <TextArea growVertically={true} className="col-8" value={this.state.Data.Warnings} onChange={this.OnWraningsChanged}/>
                     </FormGroup>
                     <FormGroup label="Medical Recommendations:" labelFor="text-input">
-                        <TextArea growVertically={true} value={this.state.Data.MedicalRecommendations} onChange={this.OnMedicalRecommendationsChanged}/>
+                        <TextArea growVertically={true} className="col-8" value={this.state.Data.MedicalRecommendations} onChange={this.OnMedicalRecommendationsChanged}/>
                     </FormGroup>
                     <FormGroup label="Side Effects:" labelFor="text-input">
-                        <TextArea growVertically={true} value={this.state.Data.SideEffects} onChange={this.OnSideEffectsChanged}/>
+                        <TextArea growVertically={true} className="col-8" value={this.state.Data.SideEffects} onChange={this.OnSideEffectsChanged}/>
                     </FormGroup>
                     {imageView}
                     <FormGroup label="Change Image:" labelFor="text-input">
-                        <FileInput text="Choose Image..." onInputChange={this.OnImageSelected}/>
+                        <FileInput text="Choose Image..." className="col-8" onInputChange={this.OnImageSelected}/>
                     </FormGroup>
                     <div>
                         <Button className="mr-2" intent="primary" text="Save" onClick={this.OnSaveButtonClicked}/>

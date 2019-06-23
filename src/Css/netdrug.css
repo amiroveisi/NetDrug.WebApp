@@ -7,3 +7,10 @@
     margin:0px auto;
    
  }
+textarea{
+    min-height: 200px !important;
+   width: 80%;
+}
+input{
+    width : 80%;
+}

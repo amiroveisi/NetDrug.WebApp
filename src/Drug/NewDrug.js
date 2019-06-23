@@ -5,6 +5,7 @@ import { Redirect } from 'react-router-dom';
 import * as ConstantValues from '../Constants';
 import { getBase64 } from '../Utilities/FileHelper';
 import { Drug } from '../Models/Drug';
+import AuthenticationService from '../AuthenticationService';
 
 class NewDrug extends Component
 {
@@ -46,43 +47,43 @@ class NewDrug extends Component
             <div className="m-5">
                 <ControlGroup vertical={true}>
                     <FormGroup label="Generic Farsi Name:" labelFor="text-input">
-                        <input type="text"  onChange={this.OnGenericNameFarsiChanged}/>
+                        <input type="text" className="col-8" onChange={this.OnGenericNameFarsiChanged}/>
                     </FormGroup>
                     <FormGroup label="Generic English Name:" labelFor="text-input">
-                        <input type="text" onChange={this.OnGenericNameEnglishChanged}/>
+                        <input type="text" className="col-8" onChange={this.OnGenericNameEnglishChanged}/>
                     </FormGroup>
                     <FormGroup label="Martindel Category:" labelFor="text-input">
-                        <input type="text" onChange={this.OnMartindelCategoryChanged}/>
+                        <input type="text" className="col-8" onChange={this.OnMartindelCategoryChanged}/>
                     </FormGroup>
                     <FormGroup label="Medical Category:" labelFor="text-input">
-                        <input type="text"  onChange={this.OnMedicalCategoryChanged}/>
+                        <input type="text" className="col-8"  onChange={this.OnMedicalCategoryChanged}/>
                     </FormGroup>
                     <FormGroup label="Use Cases:" labelFor="text-input">
-                        <TextArea growVertically={true} onChange={this.OnUseCasesChanged}/>
+                        <TextArea className="col-8" growVertically={true} onChange={this.OnUseCasesChanged}/>
                     </FormGroup>
                     <FormGroup label="Mechanism:" labelFor="text-input">
-                        <TextArea growVertically={true} onChange={this.OnMechanismChanged}/>
+                        <TextArea className="col-8" growVertically={true} onChange={this.OnMechanismChanged}/>
                     </FormGroup>
                     <FormGroup label="Pharmacokinetics:" labelFor="text-input">
-                        <TextArea growVertically={true} onChange={this.OnPharmacokineticsChanged}/>
+                        <TextArea className="col-8" growVertically={true} onChange={this.OnPharmacokineticsChanged}/>
                     </FormGroup>
                     <FormGroup label="Forbidden Use Cases:" labelFor="text-input">
-                        <TextArea growVertically={true} onChange={this.OnForbiddenUseCases}/>
+                        <TextArea className="col-8" growVertically={true} onChange={this.OnForbiddenUseCases}/>
                     </FormGroup>
                     <FormGroup label="Medical Conflicts:" labelFor="text-input">
-                        <TextArea growVertically={true} onChange={this.OnMedicalConflictsChaged}/>
+                        <TextArea className="col-8" growVertically={true} onChange={this.OnMedicalConflictsChaged}/>
                     </FormGroup>
                     <FormGroup label="Warnings:" labelFor="text-input">
-                        <TextArea growVertically={true} onChange={this.OnWraningsChanged}/>
+                        <TextArea className="col-8" growVertically={true} onChange={this.OnWraningsChanged}/>
                     </FormGroup>
                     <FormGroup label="Medical Recommendations:" labelFor="text-input">
-                        <TextArea growVertically={true} onChange={this.OnMedicalRecommendationsChanged}/>
+                        <TextArea className="col-8" growVertically={true} onChange={this.OnMedicalRecommendationsChanged}/>
                     </FormGroup>
                     <FormGroup label="Side Effects:" labelFor="text-input">
-                        <TextArea growVertically={true} onChange={this.OnSideEffectsChanged}/>
+                        <TextArea className="col-8" growVertically={true} onChange={this.OnSideEffectsChanged}/>
                     </FormGroup>
                     <FormGroup label="Image:" labelFor="text-input">
-                        <FileInput text="Choose Image..." onInputChange={this.OnImageSelected}/>
+                        <FileInput className="col-8" text="Choose Image..." onInputChange={this.OnImageSelected}/>
                     </FormGroup>
                     <div>
                         <Button className="mr-2" intent="primary" text="Add" onClick={this.OnAddButtonClicked}/>
@@ -268,7 +269,8 @@ class NewDrug extends Component
         {
             method : 'POST',
             headers: {
-                'Content-Type' : 'application/json'
+                'Content-Type' : 'application/json',
+                'Authorization' : `Bearer ${AuthenticationService.GetAuthToken()}`
             },
             body: JSON.stringify(this.state.Data)
         }).then(response => {

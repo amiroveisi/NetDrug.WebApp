@@ -12,6 +12,7 @@ import '../../node_modules/@syncfusion/ej2-splitbuttons/styles/bootstrap.css';
 import "../../node_modules/@syncfusion/ej2-react-grids/styles/bootstrap.css";
 import {Button} from '@blueprintjs/core';
 import { Redirect } from 'react-router-dom';
+import AuthenticationService from '../AuthenticationService';
 
 class DrugsGrid extends Component
 {
@@ -110,7 +111,8 @@ class DrugsGrid extends Component
         {
             method : "GET",
             headers:{
-               'Content-Type' : 'text/plain; charset=utf-8'
+               'Content-Type' : 'text/plain; charset=utf-8',
+               'Authorization' : `Bearer ${AuthenticationService.GetAuthToken()}`
             }
         }).then(function(response){
                 //console.log(response.text());

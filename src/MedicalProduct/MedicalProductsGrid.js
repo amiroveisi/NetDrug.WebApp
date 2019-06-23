@@ -13,6 +13,7 @@ import "../../node_modules/@syncfusion/ej2-react-grids/styles/bootstrap.css";
 import {Button} from '@blueprintjs/core';
 import { Redirect } from 'react-router-dom';
 import { MedicalProduct } from '../Models/MedicalProduct';
+import AuthenticationService from '../AuthenticationService';
 
 class MedicalProductsGrid extends Component
 {
@@ -97,7 +98,8 @@ class MedicalProductsGrid extends Component
         {
             method : "GET",
             headers:{
-               'Content-Type' : 'text/plain; charset=utf-8'
+               'Content-Type' : 'text/plain; charset=utf-8',
+               'Authorization' : `Bearer ${AuthenticationService.GetAuthToken()}`
             }
         }).then(function(response){
                 //console.log(response.text());

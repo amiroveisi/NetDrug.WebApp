@@ -7,6 +7,7 @@ export default class AuthenticationService
     }
     static IsLoggedIn()
     {
+        console.log(sessionStorage.getItem('token'));
         return sessionStorage.getItem('token') != '';
     }
     static Logout(returnUrl)
@@ -21,5 +22,9 @@ export default class AuthenticationService
     {
 
         window.location.href = '/login';
+    }
+    static GetAuthToken()
+    {
+        return sessionStorage.getItem('token');
     }
 }

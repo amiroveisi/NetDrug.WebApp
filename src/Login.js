@@ -15,31 +15,47 @@ class Login extends Component
             password: '',
             isLoading: false,
             IsLoggedIn : false,
-            ReturnUrl : props.extra.returnUrl
+            ReturnUrl : '',
+            HasErrors : false
         };
-        console.log(props);
+        //console.log(props);
         this.UsernameChanged = this.UsernameChanged.bind(this);
         this.PasswordChanged = this.PasswordChanged.bind(this);
         this.LoginButtonClicked = this.LoginButtonClicked.bind(this);
         
     }
+    // componentDidMount()
+    // {
+    //     const { match : {params}} = this.props;
+    //     let returnUrl = params.returnUrl;
+    //     console.log(params);
+    //     this.setState({
+    //         ReturnUrl : returnUrl
+    //     });
+    // }
     render()
     {
-        console.log(this.state.ReturnUrl);
-        if(this.state.isLoggedIn)
+        let errorMesasge = "";
+        let errorHeight = 0;
+        if(this.state.HasErrors)
+        {
+            errorMesasge = (<span >Login failed. please try again</span>);
+            errorHeight = 35;
+        }
+        if(this.state.IsLoggedIn)
         {
             // if(!this.state.ReturnUrl)
             //    this.setState({
             //        ReturnUrl : '/'
             //    });
-          return <Redirect to={this.state.ReturnUrl}/>
+          return <Redirect to="/"/>
         }
         return(
         <div className="container-fluid mt-5 h-100">
             <div className="row justify-content-center h-100 ">
                 <div className="col-3 ">
                    
-                    <Card interactive={false} elevation={Elevation.TWO} style={{height: 210 + "px"}}>
+                    <Card interactive={false} elevation={Elevation.TWO} style={{height: (210 + {errorHeight}) + "px"}}>
                     <h3>Login</h3>
                    
                         <div className="bp3-input-group .modifier mt-4">
@@ -52,7 +68,10 @@ class Login extends Component
                         </div>
                         <div className="mt-2 d-flex justify-content-end">
                         <Button intent="primary" text="Login" onClick={this.LoginButtonClicked}
-                        loading={this.state.isLoading}></Button>
+                        loading={this.state.IsLoading}></Button>
+                        </div>
+                        <div>
+                            {errorMesasge}
                         </div>
                         
                     </Card>
@@ -75,22 +94,37 @@ class Login extends Component
             body : 'Username=' + this.state.username + '&Password=' + this.state.password + '&grant_type=password'
 
             }).then(function(response){
-               let token = '';
-                response.json().then(data => {
-                    if(response.status == 200)
+              try {
+                return response.json();
+              } catch (ex) {
+                Promise.reject({exception: ex, body: response, type:'unparsable'});
+                thisObject.setState({
+                    HasErrors : true,
+                    isLoading : false
+                });                  
+              }
+            }).then(data => {
+                    if(data.access_token)
                     {
-                        token = data;
-                        sessionStorage.setItem('token',token);
+                        // console.log(data.access_token);
+                        sessionStorage.setItem('token',data.access_token);
                         thisObject.setState({
-                            isLoading  :false,
+                            IsLoading  :false,
                             IsLoggedIn : true
                         });
-                        signal.emit(ConstantValues.LoggedInEvent, token);
+                        signal.emit(ConstantValues.LoggedInEvent, data.access_token);
                     }
-                    console.log(data);
+                    else
+                    {
+                        thisObject.setState({
+                            HasErrors : true,
+                            IsLoading : false
+                        });
+                    }
+                   // console.log(data);
                 });
                 
-            });
+            
           
         }
     

@@ -1,9 +1,9 @@
 import React , {Component} from 'react';
-import {Text, Button, FormGroup, ControlGroup, TextArea} from '@blueprintjs/core';
+import {Text, Button, FormGroup, ControlGroup, Card} from '@blueprintjs/core';
 import { Redirect } from 'react-router-dom';
 import * as ConstantValues from '../Constants';
 import { Drug } from '../Models/Drug';
-
+import AuthenticationService from '../AuthenticationService';
 class NewDrug extends Component
 {
     constructor(props)
@@ -33,7 +33,8 @@ class NewDrug extends Component
         {
             method : "GET",
             headers:{
-               'Content-Type' : 'text/plain; charset=utf-8'
+               'Content-Type' : 'text/plain; charset=utf-8',
+               'Authorization' : `Bearer ${AuthenticationService.GetAuthToken()}`
             }
             }).then(response => {
                return response.text();
@@ -83,68 +84,92 @@ class NewDrug extends Component
         return (
           
           
-            <div className="m-5">
-                <ControlGroup vertical={true}>
-                    <FormGroup label="Generic Farsi Name:"  labelFor="text-input">
-                        <Text >
-                            {this.state.Data.GenericNameFarsi}  
-                        </Text>
-                    </FormGroup>
+            <div className="col-10 m-5">
+                <ControlGroup vertical={true} fill={true}>
+                    <Card>
+                        <FormGroup label="Generic Farsi Name:"  labelFor="text-input">
+                            <Text className="col-8">
+                                {this.state.Data.GenericNameFarsi}  
+                            </Text>
+                        </FormGroup>
+                    </Card>
+                    <Card>
                     <FormGroup label="Generic English Name:" labelFor="text-input">
-                       <Text>
+                       <Text className="col-8">
                            {this.state.Data.GenericNameEnglish}
                        </Text>
                     </FormGroup>
+                    </Card>
+                    <Card>
                     <FormGroup label="Martindel Category:" labelFor="text-input">
-                       <Text>
+                       <Text className="col-8">
                             {this.state.Data.MartindelCategory}
                        </Text>
                     </FormGroup>
+                    </Card>
+                    <Card>
                     <FormGroup label="Medical Category:" labelFor="text-input">
-                        <Text>
+                        <Text className="col-8">
                             {this.state.Data.MedicalCategory}
                         </Text>
                     </FormGroup>
+                    </Card>
+                    <Card>
                     <FormGroup label="Use Cases:" labelFor="text-input">
-                        <Text>
+                        <Text className="col-8">
                             {this.state.Data.UseCases}
                         </Text>
                     </FormGroup>
+                    </Card>
+                    <Card>
                     <FormGroup label="Mechanism:" labelFor="text-input">
-                        <Text>
+                        <Text className="col-8">
                             {this.state.Data.Mechanism}
                         </Text>
                     </FormGroup>
+                    </Card>
+                    <Card>
                     <FormGroup label="Pharmacokinetics:" labelFor="text-input">
                         <Text>
                             {this.state.Data.Pharmacokinetics}
                         </Text>
                     </FormGroup>
+                    </Card>
+                    <Card>
                     <FormGroup label="Forbidden Use Cases:" labelFor="text-input">
-                        <Text>
+                        <Text className="col-8">
                             {this.state.Data.ForbiddenUseCases}
                         </Text>
                     </FormGroup>
+                    </Card>
+                    <Card>
                     <FormGroup label="Medical Conflicts:" labelFor="text-input">
-                        <Text>
+                        <Text className="col-8">
                             {this.state.Data.MedicalConflicts}
                         </Text>
                     </FormGroup>
+                    </Card>
+                    <Card>
                     <FormGroup label="Warnings:" labelFor="text-input">
-                        <Text>
+                        <Text className="col-8">
                             {this.state.Data.Warnings}
                         </Text>
                     </FormGroup>
+                    </Card>
+                    <Card>
                     <FormGroup label="Medical Recommendations:" labelFor="text-input">
                         <Text>
                             {this.state.Data.MedicalRecommendations}
                         </Text>
                     </FormGroup>
+                    </Card>
+                    <Card>
                     <FormGroup label="Side Effects:" labelFor="text-input">
-                        <Text>
+                        <Text className="col-8">
                             {this.state.Data.SideEffects}
                         </Text>
                     </FormGroup>
+                    </Card>
                     {imageView}
                     <div>
                         <Button className="mr-2" intent="primary" text="Edit" onClick={this.OnEditButtonClicked}/>

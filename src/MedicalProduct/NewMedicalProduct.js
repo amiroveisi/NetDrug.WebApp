@@ -5,6 +5,7 @@ import { Redirect } from 'react-router-dom';
 import * as ConstantValues from '../Constants';
 import { getBase64 } from '../Utilities/FileHelper';
 import { MedicalProduct } from '../Models/MedicalProduct';
+import AuthenticationService from '../AuthenticationService';
 
 class NewMedicalProduct extends Component
 {
@@ -54,6 +55,10 @@ class NewMedicalProduct extends Component
     }
 
     render(){
+        if(!AuthenticationService.IsLoggedIn())
+        {
+            return <Redirect to="/login"/>
+        }
         if(this.state.IsCanceled || this.state.SavedSuccessfuly)
         {
             return <Redirect to="/medicalproduct/list"/>
@@ -182,7 +187,8 @@ class NewMedicalProduct extends Component
         {
             method : 'POST',
             headers: {
-                'Content-Type' : 'application/json'
+                'Content-Type' : 'application/json',
+                'Authorization' : `Bearer ${AuthenticationService.GetAuthToken()}`
             },
             body: JSON.stringify(this.state.Data)
         }).then(response => {

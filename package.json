@@ -5,7 +5,10 @@
   "dependencies": {
     "@blueprintjs/table": "^3.5.0",
     "@syncfusion/ej2-react-grids": "^17.1.48",
+    "bootstrap": "^4.3.1",
     "esm": "^3.2.22",
+    "less": "^3.9.0",
+    "less-loader": "^5.0.0",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
     "react-router-dom": "^5.0.0",
@@ -16,13 +19,16 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
+   
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject"
   },
   "devDependencies": {
     "babel-core": "^6.26.3",
     "babel-loader": "^8.0.5",
-    "babel-preset-react": "^6.24.1"
+    "babel-preset-react": "^6.24.1",
+    "css-loader": "^3.0.0",
+    "style-loader": "^0.23.1"
   },
   "browserslist": {
     "production": [

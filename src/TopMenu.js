@@ -2,12 +2,16 @@ import React, {Component} from 'react';
 import {Navbar, Alignment, Button} from '@blueprintjs/core';
 import AuthenticationService from './AuthenticationService';
 import {Redirect, Link} from 'react-router-dom';
-
+import signal from 'signal-js';
+import * as ConstantValues from './Constants';
 class TopMenu extends Component
 {
     constructor(props)
     {
         super(props);
+        this.state ={
+          IsLoggedIn : false
+        }
        // this.OnHomeMenuClicked = this.OnHomeMenuClicked.bind(this);
         this.OnLogInLogoutCicked = this.OnLogInLogoutCicked.bind(this);
         // this.OnDrugMenuCicked = this.OnDrugMenuCicked.bind(this);
@@ -15,6 +19,11 @@ class TopMenu extends Component
         // this.state={
         //   MedicalProductMenuClicked : false
         // };
+        signal.on(ConstantValues.LoggedInEvent,()=>{
+          this.setState({
+            IsLoggedIn : true
+          });
+        })
     }
     render(){
         let loggedInStatus = 'Log In';
