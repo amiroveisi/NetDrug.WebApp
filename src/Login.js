@@ -1,6 +1,5 @@
 import React , {Component} from 'react';
-import {Button, Card, Elevation, InputGroup, Spinner, Classes} from '@blueprintjs/core';
-import { ServerResponse } from 'http';
+import {Button, Card, Elevation} from '@blueprintjs/core';
 import * as ConstantValues from './Constants';
 import signal from 'signal-js';
 import { Redirect } from 'react-router-dom';
@@ -81,10 +80,11 @@ class Login extends Component
         ); 
     }
     LoginButtonClicked(event) {
-        this.setState({
+        let thisObject = this;
+        thisObject.setState({
             isLoading : true
         });
-        let thisObject = this;
+        
         fetch(`${ConstantValues.WebApiBaseUrl}/token`,
         {
             method : "POST",

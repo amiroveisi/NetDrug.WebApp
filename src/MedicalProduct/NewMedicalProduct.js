@@ -1,5 +1,5 @@
 import React , {Component} from 'react';
-import {Button, FormGroup, ControlGroup, TextArea, FileInput} from '@blueprintjs/core';
+import {Button, FormGroup, ControlGroup, TextArea} from '@blueprintjs/core';
 
 import { Redirect } from 'react-router-dom';
 import * as ConstantValues from '../Constants';

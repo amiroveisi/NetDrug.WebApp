@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {Navbar, Alignment, Button} from '@blueprintjs/core';
 import AuthenticationService from './AuthenticationService';
-import {Redirect, Link} from 'react-router-dom';
+import {Link} from 'react-router-dom';
 import signal from 'signal-js';
 import * as ConstantValues from './Constants';
 class TopMenu extends Component

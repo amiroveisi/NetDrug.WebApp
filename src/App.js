@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import {Route, Link, Switch, Redirect } from 'react-router-dom';
+import {Route, Switch } from 'react-router-dom';
 import Login from './Login';
 import Home from './Home';
 import '../node_modules/@blueprintjs/table/lib/css/table.css'
@@ -12,22 +12,15 @@ import DrugDetails from './Drug/DrugDetails';
 import MedicalProductsGrid from './MedicalProduct/MedicalProductsGrid';
 import NewMedicalProduct from './MedicalProduct/NewMedicalProduct';
 import MedicalProductEdit from './MedicalProduct/MedicalProductEdit'
-import styles from './Css/netdrug.css';
 class App extends Component {
 //   cellRenderer(rowIndex){
 //     return (<Cell>{(rowIndex * 10).toFixed(2)}</Cell>);
 // };
-constructor(props){
-  super(props);
-  // signal.on(constantValues.LoggedInEvent,(token)=>{
- 
-    
-  // });
-}
+
   render() {
-   let loginProps = {
-     returnUrl : '/'
-   };
+  //  let loginProps = {
+  //    returnUrl : '/'
+  //  };
     return (
       <html>
         <head>

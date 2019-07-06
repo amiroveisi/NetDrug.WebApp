@@ -1,19 +1,15 @@
 
 export default class AuthenticationService
 {
-    constructor(props)
-    {
-
-    }
     static IsLoggedIn()
     {
         console.log(sessionStorage.getItem('token'));
-        return sessionStorage.getItem('token') != '';
+        return sessionStorage.getItem('token') !== '';
     }
     static Logout(returnUrl)
     {
         sessionStorage.setItem('token', '');
-        if(returnUrl != null && returnUrl != '')
+        if(returnUrl != null && returnUrl !== '')
         {
             window.location.href = returnUrl;
         }

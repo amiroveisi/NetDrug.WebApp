@@ -1,9 +1,9 @@
 import React , {Component} from 'react';
-import {Button, FormGroup, ControlGroup, TextArea, FileInput} from '@blueprintjs/core';
+import {Button, FormGroup, ControlGroup, TextArea} from '@blueprintjs/core';
 import '../Css/netdrug.css';
 import { Redirect } from 'react-router-dom';
 import * as ConstantValues from '../Constants';
-import { getBase64 } from '../Utilities/FileHelper';
+//import { getBase64 } from '../Utilities/FileHelper';
 import { MedicalProduct } from '../Models/MedicalProduct';
 import AuthenticationService from '../AuthenticationService';
 

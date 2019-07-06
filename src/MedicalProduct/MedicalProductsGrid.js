@@ -1,5 +1,5 @@
 import React , {Component} from 'react';
-import { ColumnDirective, ColumnsDirective, Filter, GridComponent, Group, Inject, Page, PageSettingsModel, Sort } from '@syncfusion/ej2-react-grids';
+import { ColumnDirective, ColumnsDirective, Filter, GridComponent, Group, Inject, Page, Sort } from '@syncfusion/ej2-react-grids';
 import * as ConstantValues from '../Constants';
 import '../../node_modules/@syncfusion/ej2-base/styles/bootstrap.css';  
 import '../../node_modules/@syncfusion/ej2-buttons/styles/bootstrap.css';  

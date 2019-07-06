@@ -1,5 +1,5 @@
 import React , {Component} from 'react';
-import { ColumnDirective, ColumnsDirective, Filter, GridComponent, Group, Inject, Page, PageSettingsModel, Sort } from '@syncfusion/ej2-react-grids';
+import { ColumnDirective, ColumnsDirective, Filter, GridComponent, Group, Inject, Page, Sort, VirtualScroll } from '@syncfusion/ej2-react-grids';
 import * as ConstantValues from '../Constants';
 import '../../node_modules/@syncfusion/ej2-base/styles/bootstrap.css';  
 import '../../node_modules/@syncfusion/ej2-buttons/styles/bootstrap.css';  
@@ -25,8 +25,10 @@ class DrugsGrid extends Component
         this.OnEditButtonClicked = this.OnEditButtonClicked.bind(this);
         this.OnRowDeselected = this.OnRowDeselected.bind(this);
         this.OnDetailsButtonClicked = this.OnDetailsButtonClicked.bind(this);
+        this.OnNextPageClicked = this.OnNextPageClicked.bind(this);
+        this.OnPreviousPageClicked = this.OnPreviousPageClicked.bind(this);
         this.state = {
-            Data:{
+            Data:[{
                 GenericNameFarsi:'',
                 GenericNameEnglish: '',
                 MartindelCategory: '',
@@ -40,7 +42,9 @@ class DrugsGrid extends Component
                 MedicalRecommendations : '',
                 SideEffects : '',
                 Id : ''
-            },
+            }],
+            CurrentPage : 0,
+            TotalRows : 0,
             IsLoading : true,
             AddNewDrugClicked : false,
             EditDrugClicked : false,
@@ -51,7 +55,7 @@ class DrugsGrid extends Component
         };
         if(this.state.IsLoading)
         {
-            this.LoadDrugs();
+            this.LoadDrugs(1,50);
         }
         
     }
@@ -89,14 +93,20 @@ class DrugsGrid extends Component
                 <Button text="Details" className="mr-2" onClick={this.OnDetailsButtonClicked} />
             </div>        
             <div className="mt-2 mb-5 mr-5 ml-5">
-                <GridComponent dataSource={this.state.Data} allowPaging={true} pageSettings={{pageSize : 20}}
-                allowSorting={true} allowFiltering={true} rowSelected={this.OnRowSelected} rowDeselected={this.OnRowDeselected}>
+                <div>
+                    <span className="mr-2">Page {this.state.CurrentPage} of {Math.ceil(this.state.TotalRows/50)}</span>
+                    <Button text="Previous" onClick={this.OnPreviousPageClicked} className="mr-2"/>
+                    <Button text="Next" onClick={this.OnNextPageClicked} className="mr-2"/>
+                </div>
+                <GridComponent dataSource={this.state.Data} /*enableVirtualization={true} pageSettings={{pageSize : 20}}*/
+                /*allowSorting={true} allowFiltering={true}*/ rowSelected={this.OnRowSelected} rowDeselected={this.OnRowDeselected}>
+                    
                     <ColumnsDirective>
                         <ColumnDirective field='Id' visible={false}/>
                         <ColumnDirective field='GenericNameFarsi' headerText="Persian Generic Name" width='100' />
                         <ColumnDirective field='GenericNameEnglish' headerText="English Generic Name" width='100'/>
                     </ColumnsDirective>
-                    <Inject services={[Page, Sort, Filter, Group]} />
+                    {/* <Inject services={[Page, Sort, Filter, Group, VirtualScroll]} /> */}
                 
                  </GridComponent>
             </div>
@@ -104,10 +114,10 @@ class DrugsGrid extends Component
             );
     }
 
-    LoadDrugs()
+    LoadDrugs(pageNumber, rowsInPage)
     {
         let thisObject = this;
-        fetch(`${ConstantValues.WebApiBaseUrl}/${ConstantValues.DrugGetAllApi}`,
+        fetch(`${ConstantValues.WebApiBaseUrl}/${ConstantValues.DrugGetPagedApi}?pagenumber=${pageNumber}&rowsinpage=${rowsInPage}`,
         {
             method : "GET",
             headers:{
@@ -136,7 +146,9 @@ class DrugsGrid extends Component
             }).then(data=>{
                 thisObject.setState(
                     {
-                        Data: data.Data,
+                        Data: data.Data.CurrentPageData,
+                        CurrentPage : data.Data.CurrentPage,
+                        TotalRows : data.Data.TotalRows,
                         IsLoading : false
                     }
                 );
@@ -196,6 +208,22 @@ class DrugsGrid extends Component
         this.setState({
             DetailsButtonClicked : true
         });
+    }
+    OnNextPageClicked(event)
+    {
+        let nextPage = this.state.CurrentPage + 1;
+        if(nextPage > Math.ceil(this.state.TotalRows / 50))
+        {
+            return;
+        }
+        this.LoadDrugs(nextPage,50);
+    }
+    OnPreviousPageClicked(event)
+    {
+        let prevPage = this.state.CurrentPage - 1;
+        if(prevPage < 1)
+            return;
+        this.LoadDrugs(prevPage,50);
     }
 }
 
