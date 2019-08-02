@@ -8,5 +8,6 @@ export const DrugGetPagedApi = 'api/crawler/drug/getpaged';
 export const DrugNewApi = 'api/crawler/drug/CreateNew';
 export const MedicalProductUpdateApi = 'api/crawler/medicalproduct/update';
 export const MedicalProductGetApi = 'api/crawler/medicalproduct/get';
+export const MedicalProductGetPagedApi = 'api/crawler/medicalproduct/getpaged';
 export const MedicalProductGetAllApi = 'api/crawler/medicalproduct/getall';
 export const MedicalProductNewApi = 'api/crawler/medicalproduct/CreateNew';

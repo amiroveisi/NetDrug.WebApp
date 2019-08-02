@@ -27,18 +27,49 @@ class MedicalProductsGrid extends Component
         this.OnRowDeselected = this.OnRowDeselected.bind(this);
         this.OnDetailsButtonClicked = this.OnDetailsButtonClicked.bind(this);
         this.state = {
-            Data: new MedicalProduct(),
+            Data: [{
+                LatinName : '',
+                PersianName : '',
+                ImageUrl : '',
+                Image360Url : '',
+                ProductType : '',
+                Size : '',
+                Producer : '',
+                Website : '',
+                ConsumingZone : '',
+                AgeLimit : '',
+                GenderLimit : '',
+                CountInPackage : '',
+                MedicalCode : '',
+                Group : '',
+                PackageType : '',
+                Barcode : '',
+                Category : '',
+                Description : '',
+                Specifications : '',
+                Usecases : '',
+                HowToUse : '',
+                HowToKeep : '',
+                Combinations : '',
+                Price : '',
+                Color : '',
+                Material : '',
+                Code : '',
+                Id : '',
+            }],
             IsLoading : true,
             AddNewDrugClicked : false,
             EditDrugClicked : false,
             CanEdit : false,
             DetailsButtonClicked : false,
-            LoadingFailed : false
+            LoadingFailed : false,
+            CurrentPage : 0,
+            TotalRows : 0,
 
         };
         if(this.state.IsLoading)
         {
-            this.LoadMedicalProducts();
+            this.LoadMedicalProducts(1,50);
         }
         
     }
@@ -76,14 +107,14 @@ class MedicalProductsGrid extends Component
                 <Button text="Details" className="mr-2" onClick={this.OnDetailsButtonClicked} />
             </div>        
             <div className="mt-2 mb-5 mr-5 ml-5">
-                <GridComponent dataSource={this.state.Data} allowPaging={true} pageSettings={{pageSize : 20}}
-                allowSorting={true} allowFiltering={true} rowSelected={this.OnRowSelected} rowDeselected={this.OnRowDeselected}>
+                <GridComponent dataSource={this.state.Data} allowPaging={true} /*pageSettings={{pageSize : 20}}
+                allowSorting={true} allowFiltering={true}*/ rowSelected={this.OnRowSelected} rowDeselected={this.OnRowDeselected}>
                     <ColumnsDirective>
                         <ColumnDirective field='Id' visible={false}/>
                         <ColumnDirective field='LatinName' headerText="Latin Name" width='100' />
                         <ColumnDirective field='PersianName' headerText="Persian Name" width='100'/>
                     </ColumnsDirective>
-                    <Inject services={[Page, Sort, Filter, Group]} />
+                    {/* <Inject services={[Page, Sort, Filter, Group]} /> */}
                 
                  </GridComponent>
             </div>
@@ -91,10 +122,10 @@ class MedicalProductsGrid extends Component
             );
     }
 
-    LoadMedicalProducts()
+    LoadMedicalProducts(pageNumber, rowsInPage)
     {
         let thisObject = this;
-        fetch(`${ConstantValues.WebApiBaseUrl}/${ConstantValues.MedicalProductGetAllApi}`,
+        fetch(`${ConstantValues.WebApiBaseUrl}/${ConstantValues.MedicalProductGetPagedApi}?pagenumber=${pageNumber}&rowsinpage=${rowsInPage}`,
         {
             method : "GET",
             headers:{
@@ -123,7 +154,9 @@ class MedicalProductsGrid extends Component
             }).then(data=>{
                 thisObject.setState(
                     {
-                        Data: data.Data,
+                        Data: data.Data.CurrentPageData,
+                        CurrentPage : data.Data.CurrentPage,
+                        TotalRows : data.Data.TotalRows,
                         IsLoading : false
                     }
                 );
