@@ -12,7 +12,7 @@ class Login extends Component
         this.state = {
             username: '',
             password: '',
-            isLoading: false,
+            IsLoading: false,
             IsLoggedIn : false,
             ReturnUrl : '',
             HasErrors : false
@@ -82,7 +82,7 @@ class Login extends Component
     LoginButtonClicked(event) {
         let thisObject = this;
         thisObject.setState({
-            isLoading : true
+            IsLoading : true
         });
         
         fetch(`${ConstantValues.WebApiBaseUrl}/token`,

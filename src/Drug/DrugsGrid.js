@@ -10,7 +10,7 @@ import '../../node_modules/@syncfusion/ej2-navigations/styles/bootstrap.css';
 import '../../node_modules/@syncfusion/ej2-popups/styles/bootstrap.css';
 import '../../node_modules/@syncfusion/ej2-splitbuttons/styles/bootstrap.css';
 import "../../node_modules/@syncfusion/ej2-react-grids/styles/bootstrap.css";
-import {Button} from '@blueprintjs/core';
+import {Button, Alert, Toast, Toaster} from '@blueprintjs/core';
 import { Redirect } from 'react-router-dom';
 import AuthenticationService from '../AuthenticationService';
 
@@ -19,7 +19,7 @@ class DrugsGrid extends Component
     constructor(props)
     {
         super(props);
-        this.SelectedId = '';
+       
         this.OnRowSelected = this.OnRowSelected.bind(this);
         this.OnAddButtonClicked = this.OnAddButtonClicked.bind(this);
         this.OnEditButtonClicked = this.OnEditButtonClicked.bind(this);
@@ -27,6 +27,7 @@ class DrugsGrid extends Component
         this.OnDetailsButtonClicked = this.OnDetailsButtonClicked.bind(this);
         this.OnNextPageClicked = this.OnNextPageClicked.bind(this);
         this.OnPreviousPageClicked = this.OnPreviousPageClicked.bind(this);
+        this.OnDeleteButtonClicked = this.OnDeleteButtonClicked.bind(this);
         this.state = {
             Data:[{
                 GenericNameFarsi:'',
@@ -50,7 +51,9 @@ class DrugsGrid extends Component
             EditDrugClicked : false,
             CanEdit : false,
             DetailsButtonClicked : false,
-            LoadingFailed : false
+            LoadingFailed : false,
+            SelectedId : null,
+            IsDeleteAlertOpen : false
 
         };
         if(this.state.IsLoading)
@@ -69,7 +72,7 @@ class DrugsGrid extends Component
         }
         if(this.state.EditDrugClicked)
         {
-            let url = `/drug/edit/${this.SelectedId}`;
+            let url = `/drug/edit/${this.state.SelectedId}`;
             return (<Redirect to={url}/>);
         }
         if(this.state.IsLoading)
@@ -78,7 +81,7 @@ class DrugsGrid extends Component
         }
         if(this.state.DetailsButtonClicked)
         {
-            let url = `/drug/details/${this.SelectedId}`;
+            let url = `/drug/details/${this.state.SelectedId}`;
             return (<Redirect to={url}/>);
         }
         if(this.state.LoadingFailed)
@@ -88,9 +91,10 @@ class DrugsGrid extends Component
         return (
        <div>
             <div className="ml-5 mr-5 mt-2">
-                <Button text="Add" className="mr-2" onClick={this.OnAddButtonClicked}/>
-                <Button text="Edit" className="mr-2" onClick={this.OnEditButtonClicked} />
-                <Button text="Details" className="mr-2" onClick={this.OnDetailsButtonClicked} />
+                <Button text="Add" icon="add" className="mr-2" onClick={this.OnAddButtonClicked}/>
+                <Button text="Edit" icon="edit" disabled={!this.state.SelectedId} className="mr-2" onClick={this.OnEditButtonClicked} />
+                <Button text="Details" icon="list-detail-view" disabled={!this.state.SelectedId} className="mr-2" onClick={this.OnDetailsButtonClicked} />
+                <Button text="Delete" icon="delete" intent="danger" disabled={!this.state.SelectedId}  className="mr-2" onClick={this.OnDeleteButtonClicked} />
             </div>        
             <div className="mt-2 mb-5 mr-5 ml-5">
                 <div>
@@ -110,18 +114,30 @@ class DrugsGrid extends Component
                 
                  </GridComponent>
             </div>
+            <Alert cancelButtonText="Cancel"
+                    confirmButtonText="Yes, Delete It!"
+                    icon="delete"
+                    intent="danger"
+                    isOpen={this.state.IsDeleteAlertOpen}
+                    onCancel={()=>{this.setState({IsDeleteAlertOpen : false})}}
+                    onConfirm={()=>{this.OnDeleteAlertConfirm()}}>
+                        <p>
+                            Are you sure you want to delete the selected item? this action can not be undone!
+                        </p>
+            </Alert>
+            
+           
         </div>
             );
     }
-
-    LoadDrugs(pageNumber, rowsInPage)
+    DeleteDrug(drugId)
     {
         let thisObject = this;
-        fetch(`${ConstantValues.WebApiBaseUrl}/${ConstantValues.DrugGetPagedApi}?pagenumber=${pageNumber}&rowsinpage=${rowsInPage}`,
+        fetch(`${ConstantValues.WebApiBaseUrl}/${ConstantValues.DrugDeleteApi}/${drugId}`,
         {
-            method : "GET",
+            method : "POST",
             headers:{
-               'Content-Type' : 'text/plain; charset=utf-8',
+               'Content-Type' : 'application/json; charset=utf-8',
                'Authorization' : `Bearer ${AuthenticationService.GetAuthToken()}`
             }
         }).then(function(response){
@@ -131,7 +147,57 @@ class DrugsGrid extends Component
                 return temp;}
             ).then(responseText =>{
                 try{
-                    //console.log(responseText);
+                    const responseJson = JSON.parse(responseText);
+                    return responseJson;
+                }
+                catch(e)
+                {
+                    Promise.reject({exception:e, body: responseText, type:'unparsable'});
+                    console.log("error on load");
+                    thisObject.setState({
+                        LoadingFailed : true
+                    });
+                }
+            }).then(data=>{
+                console.log(data);
+                this.LoadDrugs(this.state.CurrentPage,ConstantValues.RowsInPage);
+                // thisObject.setState(
+                //     {
+                //         Data: data.Data.CurrentPageData,
+                //         CurrentPage : data.Data.CurrentPage,
+                //         TotalRows : data.Data.TotalRows,
+                //         IsLoading : false,
+                //         LoadingFailed : false
+                //     }
+                // );
+                //console.log(data);
+            }).catch(e=>{
+                console.log(e);
+                thisObject.setState({
+                    LoadingFailed : true,
+                    IsLoading : false
+                });
+            });
+    }
+    LoadDrugs(pageNumber, rowsInPage)
+    {
+        let thisObject = this;
+        fetch(`${ConstantValues.WebApiBaseUrl}/${ConstantValues.DrugGetPagedApi}?pagenumber=${pageNumber}&rowsinpage=${rowsInPage}`,
+        {
+            method : "GET",
+            headers:{
+               'Content-Type' : 'application/json; charset=utf-8',
+               'Accept-Encoding' : 'gzip',
+               'Authorization' : `Bearer ${AuthenticationService.GetAuthToken()}`
+            }
+        }).then(function(response){
+                //console.log(response.text());
+                let temp = response.text();
+             
+                return temp;}
+            ).then(responseText =>{
+                try{
+                    console.log(responseText);
                     const responseJson = JSON.parse(responseText);
                     return responseJson;
                 }
@@ -149,7 +215,8 @@ class DrugsGrid extends Component
                         Data: data.Data.CurrentPageData,
                         CurrentPage : data.Data.CurrentPage,
                         TotalRows : data.Data.TotalRows,
-                        IsLoading : false
+                        IsLoading : false,
+                        LoadingFailed : false
                     }
                 );
                 //console.log(data);
@@ -177,14 +244,17 @@ class DrugsGrid extends Component
     }
     OnRowSelected(event)
     {
-        this.SelectedId = event.data.Id;
+        this.setState({
+            SelectedId : event.data.Id
+        })
+       // this.SelectedId = event.data.Id;
         // this.setState({
         //     CanEdit : true
         // });
     }
     OnAddButtonClicked(event)
     {
-        console.log(this.SelectedId);
+        //console.log(this.SelectedId);
         this.setState({
             AddNewDrugClicked : true
         });
@@ -224,6 +294,27 @@ class DrugsGrid extends Component
         if(prevPage < 1)
             return;
         this.LoadDrugs(prevPage,50);
+    }
+    OnDeleteButtonClicked(event)
+    {
+        this.setState(
+        {
+            IsDeleteAlertOpen : true
+        });
+    }
+    OnDeleteAlertConfirm(){
+        this.setState({
+            IsDeleteAlertOpen : false
+        });
+       Toaster.create({
+           position:"bottom-right"
+       }).show({
+           message : "Deleting in progress...",
+           intent : "danger",
+           
+       });
+       this.DeleteDrug(this.state.SelectedId);
+        
     }
 }
 
