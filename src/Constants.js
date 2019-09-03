@@ -1,6 +1,6 @@
-// export const WebApiBaseUrl = 'http://www.netdrug.ir';
+export const WebApiBaseUrl = 'http://www.netdrug.ir';
 export const LoggedInEvent = 'loggedIn';
- export const WebApiBaseUrl = 'http://localhost:15847';
+//  export const WebApiBaseUrl = 'http://localhost:15847';
 export const DrugUpdateApi = 'api/crawler/drug/update';
 export const DrugGetApi = 'api/crawler/drug/get';
 export const DrugGetAllApi = 'api/crawler/drug/getall';
@@ -12,4 +12,6 @@ export const MedicalProductGetPagedApi = 'api/crawler/medicalproduct/getpaged';
 export const MedicalProductGetAllApi = 'api/crawler/medicalproduct/getall';
 export const MedicalProductNewApi = 'api/crawler/medicalproduct/CreateNew';
 export const DrugDeleteApi = "api/crawler/drug/delete";
+export const MedicalProductDeleteApi = "api/crawler/medicalproduct/delete";
 export const RowsInPage = 50;
+export const ToasterPosition = "bottom-right";

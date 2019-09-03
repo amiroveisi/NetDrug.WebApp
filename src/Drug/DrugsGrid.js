@@ -10,7 +10,7 @@ import '../../node_modules/@syncfusion/ej2-navigations/styles/bootstrap.css';
 import '../../node_modules/@syncfusion/ej2-popups/styles/bootstrap.css';
 import '../../node_modules/@syncfusion/ej2-splitbuttons/styles/bootstrap.css';
 import "../../node_modules/@syncfusion/ej2-react-grids/styles/bootstrap.css";
-import {Button, Alert, Toast, Toaster} from '@blueprintjs/core';
+import {Button, Alert, Toaster} from '@blueprintjs/core';
 import { Redirect } from 'react-router-dom';
 import AuthenticationService from '../AuthenticationService';
 
@@ -97,7 +97,7 @@ class DrugsGrid extends Component
                 <Button text="Delete" icon="delete" intent="danger" disabled={!this.state.SelectedId}  className="mr-2" onClick={this.OnDeleteButtonClicked} />
             </div>        
             <div className="mt-2 mb-5 mr-5 ml-5">
-                <div>
+                <div className="mb-2">
                     <span className="mr-2">Page {this.state.CurrentPage} of {Math.ceil(this.state.TotalRows/50)}</span>
                     <Button text="Previous" onClick={this.OnPreviousPageClicked} className="mr-2"/>
                     <Button text="Next" onClick={this.OnNextPageClicked} className="mr-2"/>
@@ -160,6 +160,13 @@ class DrugsGrid extends Component
                 }
             }).then(data=>{
                 console.log(data);
+                Toaster.create({
+                    position: ConstantValues.ToasterPosition
+                }).show({
+                    message : "Deleted Successfuly",
+                    intent : "success",
+                    
+                });
                 this.LoadDrugs(this.state.CurrentPage,ConstantValues.RowsInPage);
                 // thisObject.setState(
                 //     {
@@ -268,10 +275,10 @@ class DrugsGrid extends Component
     }
     OnRowDeselected(event)
     {
-        this.SelectedId = '';
-        // this.setState({
-        //     CanEdit : false
-        // });
+        //this.SelectedId = '';
+        this.setState({
+            SelectedId : null
+        });
     }
     OnDetailsButtonClicked(event)
     {
@@ -307,7 +314,7 @@ class DrugsGrid extends Component
             IsDeleteAlertOpen : false
         });
        Toaster.create({
-           position:"bottom-right"
+           position: ConstantValues.ToasterPosition
        }).show({
            message : "Deleting in progress...",
            intent : "danger",
