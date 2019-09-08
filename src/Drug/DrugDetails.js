@@ -20,6 +20,7 @@ class NewDrug extends Component
        
        
     }
+   
     componentDidMount()
     {
         const { match : {params}} = this.props;

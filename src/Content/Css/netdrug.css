@@ -1,0 +1,25 @@
+@font-face{
+    font-family: IranSans;
+    src: url("/src/Content/IRANSans.ttf") format("ttf");
+}
+
+ .persian-font{
+     font-family: IranSans !important;
+ }
+textarea{
+    min-height: 200px !important;
+   width: 80%;
+}
+input{
+    width : 80%;
+}
+
+body{
+    height: 100% !important;
+}
+div#root {
+    height: 100% !important;
+}
+html{
+    height: 100% !important;
+}

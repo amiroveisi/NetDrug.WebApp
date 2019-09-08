@@ -60,8 +60,8 @@ class MedicalProductsGrid extends Component
                 Id : '',
             }],
             IsLoading : true,
-            AddNewDrugClicked : false,
-            EditDrugClicked : false,
+            AddNewMedicalProductClicked : false,
+            EditMedicalProductClicked : false,
             CanEdit : false,
             DetailsButtonClicked : false,
             LoadingFailed : false,
@@ -81,13 +81,13 @@ class MedicalProductsGrid extends Component
 
     render(){
         console.log("rendering");
-        if(this.state.AddNewDrugClicked)
+        if(this.state.AddNewMedicalProductClicked)
         {
             return (<Redirect to="/medicalproduct/new"/>);
         }
-        if(this.state.EditDrugClicked)
+        if(this.state.EditMedicalProductClicked)
         {
-            let url = `/medicalproduct/edit/${this.SelectedId}`;
+            let url = `/medicalproduct/edit/${this.state.SelectedId}`;
             return (<Redirect to={url}/>);
         }
         if(this.state.IsLoading)
@@ -96,7 +96,7 @@ class MedicalProductsGrid extends Component
         }
         if(this.state.DetailsButtonClicked)
         {
-            let url = `/medicalproduct/details/${this.SelectedId}`;
+            let url = `/medicalproduct/details/${this.state.SelectedId}`;
             return (<Redirect to={url}/>);
         }
         if(this.state.LoadingFailed)
@@ -271,14 +271,14 @@ class MedicalProductsGrid extends Component
     {
         // console.log(this.SelectedId);
         this.setState({
-            AddNewDrugClicked : true
+            AddNewMedicalProductClicked : true
         });
     }
     OnEditButtonClicked(event)
     {
         //console.log(this.SelectedId);
         this.setState({
-            EditDrugClicked : true
+            EditMedicalProductClicked : true
         });
     }
     OnRowDeselected(event)

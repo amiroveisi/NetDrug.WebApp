@@ -1,6 +1,5 @@
 import React , {Component} from 'react';
 import {Button, FormGroup, ControlGroup, TextArea} from '@blueprintjs/core';
-import '../Css/netdrug.css';
 import { Redirect } from 'react-router-dom';
 import * as ConstantValues from '../Constants';
 //import { getBase64 } from '../Utilities/FileHelper';
@@ -154,7 +153,7 @@ class MedicalProductEdit extends Component
                         <FileInput text="Choose Image..." onInputChange={this.OnImageSelected}/>
                     </FormGroup> */}
                     <div>
-                        <Button className="mr-2" intent="primary" text="Add" onClick={this.OnSaveButtonClicked}/>
+                        <Button className="mr-2" intent="primary" text="Save" onClick={this.OnSaveButtonClicked}/>
                         <Button className="ml-2" intent="none" text="Cancel" onClick={this.OnCancelButtonClicked}/>
                     </div>
                 </ControlGroup>
@@ -195,7 +194,8 @@ class MedicalProductEdit extends Component
         {
             method : 'POST',
             headers: {
-                'Content-Type' : 'application/json'
+                'Content-Type' : 'application/json',
+                'Authorization' : `Bearer ${AuthenticationService.GetAuthToken()}`
             },
             body: JSON.stringify(this.state.Data)
         }).then(response => {

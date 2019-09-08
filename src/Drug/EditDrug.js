@@ -55,7 +55,9 @@ class NewDrug extends Component
                }
             ).then(responseText =>{
                 try{
-                    return JSON.parse(responseText);
+                    let d =  JSON.parse(responseText);
+                    console.log(d);
+                    return d;
                 }
                 catch(e)
                 {
