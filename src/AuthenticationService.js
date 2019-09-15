@@ -4,7 +4,7 @@ export default class AuthenticationService
     static IsLoggedIn()
     {
         console.log(sessionStorage.getItem('token'));
-        return sessionStorage.getItem('token') !== '';
+        return sessionStorage.getItem('token') && sessionStorage.getItem('token') !== '';
     }
     static Logout(returnUrl)
     {

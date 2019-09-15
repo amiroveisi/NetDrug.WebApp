@@ -1,6 +1,6 @@
 @font-face{
     font-family: IranSans;
-    src: url("/src/Content/IRANSans.ttf") format("ttf");
+    src: url("../Fonts/IRANSans.ttf") format("ttf");
 }
 
  .persian-font{
@@ -22,4 +22,15 @@ div#root {
 }
 html{
     height: 100% !important;
+    font-family: IranSans !important;
+}
+.cursor-pointer
+{
+    cursor:pointer;
+}
+input[type=number]::-webkit-inner-spin-button, 
+input[type=number]::-webkit-outer-spin-button { 
+  -webkit-appearance: none; 
+  margin: 0; 
+  text-align: center !important;
 }

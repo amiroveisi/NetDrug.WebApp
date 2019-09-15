@@ -85,7 +85,7 @@ class Login extends Component
             IsLoading : true
         });
         
-        fetch(`${ConstantValues.WebApiBaseUrl}/token`,
+        fetch(`${ConstantValues.WebApiBaseUrl}/oauth2/token`,
         {
             method : "POST",
             headers: {
@@ -100,7 +100,7 @@ class Login extends Component
                 Promise.reject({exception: ex, body: response, type:'unparsable'});
                 thisObject.setState({
                     HasErrors : true,
-                    isLoading : false
+                    IsLoading : false
                 });                  
               }
             }).then(data => {

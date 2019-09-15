@@ -10,15 +10,18 @@ import '../../node_modules/@syncfusion/ej2-navigations/styles/bootstrap.css';
 import '../../node_modules/@syncfusion/ej2-popups/styles/bootstrap.css';
 import '../../node_modules/@syncfusion/ej2-splitbuttons/styles/bootstrap.css';
 import "../../node_modules/@syncfusion/ej2-react-grids/styles/bootstrap.css";
-import { Button, Alert, Toaster, Spinner } from '@blueprintjs/core';
+import { NonIdealState, Button, Alert, Toaster, Spinner, NumericInput } from '@blueprintjs/core';
 import { Redirect } from 'react-router-dom';
 import AuthenticationService from '../AuthenticationService';
 import dotnetify from 'dotnetify';
 class DrugsGrid extends Component {
     constructor(props) {
         super(props);
-
-        this.vm = dotnetify.react.connect("SearchViewModel", this);
+        let authHeader = { Authorization: `Bearer ${AuthenticationService.GetAuthToken()}` };
+        this.vm = dotnetify.react.connect("SearchViewModel", this,
+            {
+                headers: authHeader
+            });
         this.OnRowSelected = this.OnRowSelected.bind(this);
         this.OnAddButtonClicked = this.OnAddButtonClicked.bind(this);
         this.OnEditButtonClicked = this.OnEditButtonClicked.bind(this);
@@ -27,7 +30,11 @@ class DrugsGrid extends Component {
         this.OnNextPageClicked = this.OnNextPageClicked.bind(this);
         this.OnPreviousPageClicked = this.OnPreviousPageClicked.bind(this);
         this.OnDeleteButtonClicked = this.OnDeleteButtonClicked.bind(this);
+        this.OnUserEnteredPage = this.OnUserEnteredPage.bind(this);
+        this.OnGoToPageKeyPress = this.OnGoToPageKeyPress.bind(this);
+        this.OnPageNumberLostFocus = this.OnPageNumberLostFocus.bind(this);
         this.CanCleanSearch = false;
+        this.LastValidPage = 1;
         this.state = {
 
             AddNewDrugClicked: false,
@@ -42,7 +49,8 @@ class DrugsGrid extends Component {
                 Page: 1,
                 RowsInPage: 50
             },
-            SearchResult: null
+            SearchResult: null,
+            UserEnteredPage: 1
 
         };
 
@@ -66,6 +74,72 @@ class DrugsGrid extends Component {
                 </div>
             </div>);
         }
+        let grid = (<div className="h-100 container">
+            <div className="row h-100 justify-content-center align-items-center">
+                <NonIdealState title="No search result :(" description="Try searching for something else"
+                    icon="search" />
+            </div>
+        </div>);
+        if (this.state.SearchResult.Data) {
+            grid = (
+                <div className="container-fluid">
+                    <div className="container">
+                        <div className="mt-2 mb-2 row justify-content-center align-items-center no-gutters">
+                            <div className="col-*">
+
+                                <Button icon="arrow-left" onClick={this.OnPreviousPageClicked} className="mr-2" />
+                            </div>
+                            <div className="col-*">
+                                <span className="mr-2">Page </span>
+                            </div>
+                            <div className="col-* ">
+                                <input type="number"
+                                    className="bp3-input mr-2" value={this.state.SearchQuery.Page}
+                                    onKeyPress={this.OnGoToPageKeyPress}
+                                    onChange={this.OnUserEnteredPage}
+                                    onFocus={event => event.target.select()}
+                                    onBlur={this.OnPageNumberLostFocus}
+                                    style={{width : '45px'}} />
+                            </div>
+                            <div className="col-*">
+                                <span className="mr-2"> of {Math.ceil(this.state.SearchResult.Data.TotalRows / 50)}</span>
+                            </div>
+                            <div>
+                                <Button icon="arrow-right" onClick={this.OnNextPageClicked} className="mr-2" />
+                            </div>
+
+                        </div>
+                    </div>
+                    <div className="container-fluid">
+
+                        <div className="mb-5 row">
+                            <GridComponent className="persian-font" dataSource={this.state.SearchResult.Data.CurrentPageData} /*enableVirtualization={true} pageSettings={{pageSize : 20}}*/
+                                rowSelected={this.OnRowSelected} rowDeselected={this.OnRowDeselected}>
+
+                                <ColumnsDirective>
+                                    <ColumnDirective field='Id' visible={false} />
+                                    <ColumnDirective field='GenericNameFarsi' headerText="Persian Generic Name" width='100' />
+                                    <ColumnDirective field='GenericNameEnglish' headerText="English Generic Name" width='100' />
+                                </ColumnsDirective>
+
+                            </GridComponent>
+                        </div>
+                    </div>
+                    <Alert cancelButtonText="Cancel"
+                        confirmButtonText="Yes, Delete It!"
+                        icon="delete"
+                        intent="danger"
+                        isOpen={this.state.IsDeleteAlertOpen}
+                        onCancel={() => { this.setState({ IsDeleteAlertOpen: false }) }}
+                        onConfirm={() => { this.OnDeleteAlertConfirm() }}>
+                        <p>
+                            Are you sure you want to delete the selected item? this action can not be undone!
+                             </p>
+                    </Alert>
+                </div>
+            );
+        }
+
 
         if (this.state.AddNewDrugClicked) {
             return (<Redirect to="/drug/new" />);
@@ -82,23 +156,22 @@ class DrugsGrid extends Component {
         if (this.state.LoadingFailed) {
             return (<span>Error while loading data!</span>);
         }
-        const SearchIcon = (<span className="bp3-icon bp3-icon-search" onClick={event => {
-            this.setState({
-                SearchResult: null,
-                SearchQuery: {...this.state.SearchQuery, Page : 1}
-            });
+        const SearchIcon = (<span className="bp3-icon bp3-icon-search cursor-pointer" onClick={event => {
+            this.LoadDrugs({ ...this.state.SearchQuery, Page: 1 });
         }}></span>);
-        const ClearSearchIcon = (<span className="bp3-icon bp3-icon-delete" onClick={event => {
-            this.setState({
-                SearchResult: null,
-                SearchQuery: {Text : "", Page : 1, RowsInPage : 50}
-            });
+        const ClearSearchIcon = (<span className="bp3-icon bp3-icon-delete cursor-pointer" onClick={event => {
+            this.LoadDrugs({
+                Text: "",
+                Page: 1,
+                RowsInPage: ConstantValues.RowsInPage
+            })
+
         }}></span>);
         let SearchBarAction = SearchIcon;
         if (this.CanCleanSearch)
             SearchBarAction = ClearSearchIcon;
         return (
-            <div className="pb-2 pt-2">
+            <div className="container-fluid h-100 pb-2 pt-2">
                 <div className="container-fluid">
 
                     <div className="row no-gutters">
@@ -121,49 +194,54 @@ class DrugsGrid extends Component {
                                         }
                                     });
                                 }} value={this.state.SearchQuery.Text}
+                                onKeyPress={event => {
+                                    if (event.charCode === 13) {
+                                        this.LoadDrugs({...this.state.SearchQuery, Page : 1});
+                                    }
+                                }
+                                }
                             />
                         </div>
                     </div>
 
                 </div>
-                <div className="container-fluid">
-                    <div className="mt-2 mb-5">
-                        <div className="mb-2">
-                            <span className="mr-2">Page {this.state.SearchResult.Data.CurrentPage} of {Math.ceil(this.state.SearchResult.Data.TotalRows / 50)}</span>
-                            <Button text="Previous" icon="arrow-left" onClick={this.OnPreviousPageClicked} className="mr-2" />
-                            <Button text="Next" icon="arrow-right" onClick={this.OnNextPageClicked} className="mr-2" />
-                        </div>
-                        {console.log(this.state.SearchResult)}
-                        <GridComponent dataSource={this.state.SearchResult.Data.CurrentPageData} /*enableVirtualization={true} pageSettings={{pageSize : 20}}*/
-                /*allowSorting={true} allowFiltering={true}*/ rowSelected={this.OnRowSelected} rowDeselected={this.OnRowDeselected}>
+                {grid}
 
-                            <ColumnsDirective>
-                                <ColumnDirective field='Id' visible={false} />
-                                <ColumnDirective field='GenericNameFarsi' headerText="Persian Generic Name" width='100' />
-                                <ColumnDirective field='GenericNameEnglish' headerText="English Generic Name" width='100' />
-                            </ColumnsDirective>
-                            {/* <Inject services={[Page, Sort, Filter, Group, VirtualScroll]} /> */}
-
-                        </GridComponent>
-                    </div>
-                </div>
-                <Alert cancelButtonText="Cancel"
-                    confirmButtonText="Yes, Delete It!"
-                    icon="delete"
-                    intent="danger"
-                    isOpen={this.state.IsDeleteAlertOpen}
-                    onCancel={() => { this.setState({ IsDeleteAlertOpen: false }) }}
-                    onConfirm={() => { this.OnDeleteAlertConfirm() }}>
-                    <p>
-                        Are you sure you want to delete the selected item? this action can not be undone!
-                        </p>
-                </Alert>
 
 
             </div>
         );
     }
 
+    OnPageNumberLostFocus(event) {
+        console.log("on blur");
+        console.log(this.state.SearchQuery.Page);
+        if (!this.state.SearchQuery.Page) {
+            this.setState({
+                SearchQuery: {
+                    ...this.state.SearchQuery,
+                    Page: this.LastValidPage
+                }
+            });
+        }
+    }
+    OnGoToPageKeyPress(event) {
+        if (event.charCode === 13 && this.state.SearchQuery.Page) {
+            this.LoadDrugs(this.state.SearchQuery);
+        }
+    }
+    OnUserEnteredPage(event) {
+        let page = event.target.value;
+        if (page && page <= 0 || page > Math.ceil(this.state.SearchResult.Data.TotalRows / 50))
+            return;
+        if (event.target.value)
+            this.LastValidPage = event.target.value;
+        else
+            this.LastValidPage = this.state.SearchQuery.Page;
+        this.setState({
+            SearchQuery: { ...this.state.SearchQuery, Page: event.target.value }
+        });
+    }
     DeleteDrug(drugId) {
         let thisObject = this;
         fetch(`${ConstantValues.WebApiBaseUrl}/${ConstantValues.DrugDeleteApi}/${drugId}`,
@@ -200,7 +278,7 @@ class DrugsGrid extends Component {
                     intent: "success",
 
                 });
-                this.LoadDrugs(this.state.CurrentPage, ConstantValues.RowsInPage);
+                this.LoadDrugs(this.state.SearchQuery);
                 // thisObject.setState(
                 //     {
                 //         Data: data.Data.CurrentPageData,
@@ -220,6 +298,12 @@ class DrugsGrid extends Component {
             });
     }
 
+    LoadDrugs(searchquery) {
+        this.setState({
+            SearchResult: null,
+            SearchQuery: searchquery
+        });
+    }
     OnRowSelected(event) {
         this.setState({
             SelectedId: event.data.Id
@@ -250,30 +334,13 @@ class DrugsGrid extends Component {
         if (nextPage > Math.ceil(this.state.SearchResult.Data.TotalRows / 50)) {
             return;
         }
-        let currentQueryText = this.state.SearchQuery.Text;
-        this.setState({
-            SearchResult: null,
-            SearchQuery: {
-                Text: currentQueryText,
-                Page: nextPage,
-                RowsInPage: 50
-            }
-        });
-
+        this.LoadDrugs({ ...this.state.SearchQuery, Page: nextPage });
     }
     OnPreviousPageClicked(event) {
         let prevPage = this.state.SearchResult.Data.CurrentPage - 1;
         if (prevPage < 1)
             return;
-        let currentQueryText = this.state.SearchQuery.Text;
-        this.setState({
-            SearchResult: null,
-            SearchQuery: {
-                Text: currentQueryText,
-                Page: prevPage,
-                RowsInPage: 50
-            }
-        });
+        this.LoadDrugs({ ...this.state.SearchQuery, Page: prevPage });
     }
     OnDeleteButtonClicked(event) {
         this.setState(
