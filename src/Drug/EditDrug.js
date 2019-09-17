@@ -11,6 +11,7 @@ class NewDrug extends Component
     constructor(props)
     {
         super(props);
+        this.CurrentSearchQuery = {};
         this.OnGenericNameFarsiChanged = this.OnGenericNameFarsiChanged.bind(this);
         this.OnGenericNameEnglishChanged = this.OnGenericNameEnglishChanged.bind(this);
         this.OnMartindelCategoryChanged = this.OnMartindelCategoryChanged.bind(this);
@@ -37,6 +38,7 @@ class NewDrug extends Component
     componentDidMount()
     {
         const { match : {params}} = this.props;
+        this.CurrentSearchQuery = this.props.location.state.currentSearchQuery;
         this.setState({
             IsLoading : true
         });
@@ -77,7 +79,12 @@ class NewDrug extends Component
     render(){
         if(this.state.IsCanceled || this.state.SavedSuccessfuly)
         {
-            return <Redirect to="/drug/list"/>
+            return <Redirect to={{
+                pathname : "/drug/list",
+                state : {
+                    currentSearchQuery : this.CurrentSearchQuery
+                }
+            }}/>
         }
         if(this.state.IsLoading)
         {

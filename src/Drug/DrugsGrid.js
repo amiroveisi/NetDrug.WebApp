@@ -55,6 +55,14 @@ class DrugsGrid extends Component {
         };
 
     }
+    componentDidMount() {
+        if (this.props.location.state) {
+            let currentSearchQuery = this.props.location.state.currentSearchQuery;
+            this.LoadDrugs({
+                ...currentSearchQuery
+            });
+        }
+    }
     componentWillUnmount() {
         this.vm.$destroy();
     }
@@ -99,7 +107,7 @@ class DrugsGrid extends Component {
                                     onChange={this.OnUserEnteredPage}
                                     onFocus={event => event.target.select()}
                                     onBlur={this.OnPageNumberLostFocus}
-                                    style={{width : '45px'}} />
+                                    style={{ width: '45px' }} />
                             </div>
                             <div className="col-*">
                                 <span className="mr-2"> of {Math.ceil(this.state.SearchResult.Data.TotalRows / 50)}</span>
@@ -146,7 +154,13 @@ class DrugsGrid extends Component {
         }
         if (this.state.EditDrugClicked) {
             let url = `/drug/edit/${this.state.SelectedId}`;
-            return (<Redirect to={url} />);
+            return (<Redirect to={
+                {
+                    pathname: url,
+                    state: {
+                        currentSearchQuery: this.state.SearchQuery
+                    }
+                }} />);
         }
 
         if (this.state.DetailsButtonClicked) {
@@ -196,7 +210,7 @@ class DrugsGrid extends Component {
                                 }} value={this.state.SearchQuery.Text}
                                 onKeyPress={event => {
                                     if (event.charCode === 13) {
-                                        this.LoadDrugs({...this.state.SearchQuery, Page : 1});
+                                        this.LoadDrugs({ ...this.state.SearchQuery, Page: 1 });
                                     }
                                 }
                                 }

@@ -1,6 +1,7 @@
 @font-face{
     font-family: IranSans;
-    src: url("../Fonts/IRANSans.ttf") format("ttf");
+    src: local("IranSan") url('../Fonts/IRANSans.ttf') format("ttf");
+    src: url('../Fonts/IRANSansWeb.woff2') format('woff2')
 }
 
  .persian-font{
@@ -16,6 +17,7 @@ input{
 
 body{
     height: 100% !important;
+    font-family: IranSans !important;
 }
 div#root {
     height: 100% !important;

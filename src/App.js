@@ -16,6 +16,8 @@ import MedicalProductEdit from './MedicalProduct/MedicalProductEdit';
 import dotnetify from 'dotnetify';
 import signalr from 'dotnetify/dist/signalR-netfx';
 import './Content/Css/netdrug.css';
+
+
 class App extends Component {
 constructor(props)
 {
@@ -53,10 +55,10 @@ constructor(props)
           <TopMenu />
           <Switch>
             <Route exact path='/' component={Home} />
-            <Route path='/login/' component={Login} />
+            <Route path='/login/'  component={Login} />
             <Route path='/drug/list' component={DrugsGrid} />
             <Route path='/drug/new' component={NewDrug} />
-            <Route path='/drug/edit/:drugId' component={EditDrug} />
+            <Route path='/drug/edit/:drugId' render={props => <EditDrug   {...props} CurrentPage={2} />}/>
             <Route path='/drug/details/:drugId' component={DrugDetails} />
             <Route path='/medicalproduct/new' component={NewMedicalProduct} />
             <Route path='/medicalproduct/list' component={MedicalProductsGrid} />
