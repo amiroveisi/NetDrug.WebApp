@@ -1,15 +1,13 @@
-import React , {Component} from 'react';
-import {Button, FormGroup, ControlGroup, TextArea, FileInput} from '@blueprintjs/core';
+import React, { Component } from 'react';
+import { Button, FormGroup, ControlGroup, TextArea, FileInput } from '@blueprintjs/core';
 import { Redirect } from 'react-router-dom';
 import * as ConstantValues from '../Constants';
 import { getBase64 } from '../Utilities/FileHelper';
 import { Drug } from '../Models/Drug';
 import AuthenticationService from '../AuthenticationService';
 
-class NewDrug extends Component
-{
-    constructor(props)
-    {
+class NewDrug extends Component {
+    constructor(props) {
         super(props);
         this.CurrentSearchQuery = {};
         this.OnGenericNameFarsiChanged = this.OnGenericNameFarsiChanged.bind(this);
@@ -28,344 +26,324 @@ class NewDrug extends Component
         this.OnCancelButtonClicked = this.OnCancelButtonClicked.bind(this);
         this.OnImageSelected = this.OnImageSelected.bind(this);
         this.state = {
-                Data: new Drug(),
-                IsCanceled : false,
-                IsLoading : false
-            }
-       
-        
+            Data: new Drug(),
+            IsCanceled: false,
+            IsLoading: false
+        }
+
+
     }
-    componentDidMount()
-    {
-        const { match : {params}} = this.props;
-        this.CurrentSearchQuery = this.props.location.state.currentSearchQuery;
+    componentDidMount() {
+        const { match: { params } } = this.props;
+        if (this.props.location.state)
+            this.CurrentSearchQuery = this.props.location.state.currentSearchQuery;
         this.setState({
-            IsLoading : true
+            IsLoading: true
         });
         let thisObject = this;
-        
+
         fetch(`${ConstantValues.WebApiBaseUrl}/${ConstantValues.DrugGetApi}/${params.drugId}`,
-        {
-            method : "GET",
-            headers:{
-               'Content-Type' : 'text/plain; charset=utf-8',
-               'Authorization' : `Bearer ${AuthenticationService.GetAuthToken()}`
-            }
+            {
+                method: "GET",
+                headers: {
+                    'Content-Type': 'text/plain; charset=utf-8',
+                    'Authorization': `Bearer ${AuthenticationService.GetAuthToken()}`
+                }
             }).then(response => {
-               return response.text();
-             
-               }
-            ).then(responseText =>{
-                try{
-                    let d =  JSON.parse(responseText);
+                return response.text();
+
+            }
+            ).then(responseText => {
+                try {
+                    let d = JSON.parse(responseText);
                     console.log(d);
                     return d;
                 }
-                catch(e)
-                {
-                    Promise.reject({exception:e, body: responseText, type:'unparsable'});
+                catch (e) {
+                    Promise.reject({ exception: e, body: responseText, type: 'unparsable' });
                 }
-            }).then(data=>{
-                
+            }).then(data => {
+
                 thisObject.setState(
                     {
                         Data: data.Data,
-                        IsLoading : false,
-                        SavedSuccessfuly : false
+                        IsLoading: false,
+                        SavedSuccessfuly: false
                     }
                 );
             });
     }
-    render(){
-        if(this.state.IsCanceled || this.state.SavedSuccessfuly)
-        {
+    render() {
+        if (this.state.IsCanceled || this.state.SavedSuccessfuly) {
             return <Redirect to={{
-                pathname : "/drug/list",
-                state : {
-                    currentSearchQuery : this.CurrentSearchQuery
+                pathname: "/drug/list",
+                state: {
+                    currentSearchQuery: this.CurrentSearchQuery
                 }
-            }}/>
+            }} />
         }
-        if(this.state.IsLoading)
-        {
+        if (this.state.IsLoading) {
             return (<span>Loading...</span>);
         }
-        let imageView =  (<div></div>);
+        let imageView = (<div></div>);
         let imageUrl = `${ConstantValues.WebApiBaseUrl}/images/${this.state.Data.ImageFileName}`;
-        if(this.state.Data.ImageFileName)
-        {
+        if (this.state.Data.ImageFileName) {
             imageView = (<FormGroup label="Image:" >
-                            <img src={imageUrl} alt={this.state.Data.GenericNameEnglish}
-                            width="200" height="200"/>
-                        </FormGroup>);
+                <img src={imageUrl} alt={this.state.Data.GenericNameEnglish}
+                    width="200" height="200" />
+            </FormGroup>);
         }
         return (
-          
-           
+
+
             <div className="m-5 col-10">
                 <ControlGroup vertical={true}>
                     <FormGroup label="Generic Farsi Name:" labelFor="text-input">
-                        <input type="text" className="col-8" value={this.state.Data.GenericNameFarsi} onChange={this.OnGenericNameFarsiChanged}/>
+                        <input type="text" className="col-8" value={this.state.Data.GenericNameFarsi} onChange={this.OnGenericNameFarsiChanged} />
                     </FormGroup>
                     <FormGroup label="Generic English Name:" labelFor="text-input">
-                        <input type="text" className="col-8" value={this.state.Data.GenericNameEnglish} onChange={this.OnGenericNameEnglishChanged}/>
+                        <input type="text" className="col-8" value={this.state.Data.GenericNameEnglish} onChange={this.OnGenericNameEnglishChanged} />
                     </FormGroup>
                     <FormGroup label="Martindel Category:" labelFor="text-input">
-                        <input type="text" className="col-8" value={this.state.Data.MartindelCategory} onChange={this.OnMartindelCategoryChanged}/>
+                        <input type="text" className="col-8" value={this.state.Data.MartindelCategory} onChange={this.OnMartindelCategoryChanged} />
                     </FormGroup>
                     <FormGroup label="Medical Category:" labelFor="text-input">
-                        <input type="text" className="col-8" value={this.state.Data.MedicalCategory} onChange={this.OnMedicalCategoryChanged}/>
+                        <input type="text" className="col-8" value={this.state.Data.MedicalCategory} onChange={this.OnMedicalCategoryChanged} />
                     </FormGroup>
                     <FormGroup label="Use Cases:" labelFor="text-input">
-                        <TextArea growVertically={true} className="col-8" value={this.state.Data.UseCases} onChange={this.OnUseCasesChanged}/>
+                        <TextArea growVertically={true} className="col-8" value={this.state.Data.UseCases} onChange={this.OnUseCasesChanged} />
                     </FormGroup>
                     <FormGroup label="Mechanism:" labelFor="text-input">
-                        <TextArea growVertically={true} className="col-8" value={this.state.Data.Mechanism} onChange={this.OnMechanismChanged}/>
+                        <TextArea growVertically={true} className="col-8" value={this.state.Data.Mechanism} onChange={this.OnMechanismChanged} />
                     </FormGroup>
                     <FormGroup label="Pharmacokinetics:" labelFor="text-input">
-                        <TextArea className="col-8" growVertically={true} value={this.state.Data.Pharmacokinetics} onChange={this.OnPharmacokineticsChanged}/>
+                        <TextArea className="col-8" growVertically={true} value={this.state.Data.Pharmacokinetics} onChange={this.OnPharmacokineticsChanged} />
                     </FormGroup>
                     <FormGroup label="Forbidden Use Cases:" labelFor="text-input">
-                        <TextArea growVertically={true} className="col-8" value={this.state.Data.ForbiddenUseCases} onChange={this.OnForbiddenUseCases}/>
+                        <TextArea growVertically={true} className="col-8" value={this.state.Data.ForbiddenUseCases} onChange={this.OnForbiddenUseCases} />
                     </FormGroup>
                     <FormGroup label="Medical Conflicts:" labelFor="text-input">
-                        <TextArea growVertically={true} className="col-8" value={this.state.Data.MedicalConflicts} onChange={this.OnMedicalConflictsChaged}/>
+                        <TextArea growVertically={true} className="col-8" value={this.state.Data.MedicalConflicts} onChange={this.OnMedicalConflictsChaged} />
                     </FormGroup>
                     <FormGroup label="Warnings:" labelFor="text-input">
-                        <TextArea growVertically={true} className="col-8" value={this.state.Data.Warnings} onChange={this.OnWraningsChanged}/>
+                        <TextArea growVertically={true} className="col-8" value={this.state.Data.Warnings} onChange={this.OnWraningsChanged} />
                     </FormGroup>
                     <FormGroup label="Medical Recommendations:" labelFor="text-input">
-                        <TextArea growVertically={true} className="col-8" value={this.state.Data.MedicalRecommendations} onChange={this.OnMedicalRecommendationsChanged}/>
+                        <TextArea growVertically={true} className="col-8" value={this.state.Data.MedicalRecommendations} onChange={this.OnMedicalRecommendationsChanged} />
                     </FormGroup>
                     <FormGroup label="Side Effects:" labelFor="text-input">
-                        <TextArea growVertically={true} className="col-8" value={this.state.Data.SideEffects} onChange={this.OnSideEffectsChanged}/>
+                        <TextArea growVertically={true} className="col-8" value={this.state.Data.SideEffects} onChange={this.OnSideEffectsChanged} />
                     </FormGroup>
                     {imageView}
                     <FormGroup label="Change Image:" labelFor="text-input">
-                        <FileInput text="Choose Image..." className="col-8" onInputChange={this.OnImageSelected}/>
+                        <FileInput text="Choose Image..." className="col-8" onInputChange={this.OnImageSelected} />
                     </FormGroup>
                     <div>
-                        <Button className="mr-2" intent="primary" text="Save" onClick={this.OnSaveButtonClicked}/>
-                        <Button className="ml-2" intent="none" text="Cancel" onClick={this.OnCancelButtonClicked}/>
+                        <Button className="mr-2" intent="primary" text="Save" onClick={this.OnSaveButtonClicked} />
+                        <Button className="ml-2" intent="none" text="Cancel" onClick={this.OnCancelButtonClicked} />
                     </div>
                 </ControlGroup>
             </div>
         );
     }
 
-    OnGenericNameEnglishChanged(event)
-    {
+    OnGenericNameEnglishChanged(event) {
         let eventTarget = event.currentTarget;
-        this.setState(lastState =>(
+        this.setState(lastState => (
             {
-                Data:{
+                Data: {
                     ...lastState.Data,
-                    GenericNameEnglish : eventTarget.value
+                    GenericNameEnglish: eventTarget.value
                 }
             })
         );
     }
 
-    OnGenericNameFarsiChanged(event)
-    {
-       // console.log(event);
-        
+    OnGenericNameFarsiChanged(event) {
+        // console.log(event);
+
         let eventTarget = event.currentTarget;
-        this.setState(lastState =>(
+        this.setState(lastState => (
             {
-                Data:{
+                Data: {
                     ...lastState.Data,
-                    GenericNameFarsi : eventTarget.value
+                    GenericNameFarsi: eventTarget.value
                 }
             })
         );
     }
 
-    OnMartindelCategoryChanged(event)
-    {
+    OnMartindelCategoryChanged(event) {
         let eventTarget = event.currentTarget;
-        this.setState(lastState =>(
+        this.setState(lastState => (
             {
-                Data:{
+                Data: {
                     ...lastState.Data,
-                    MartindelCategory : eventTarget.value
+                    MartindelCategory: eventTarget.value
                 }
             })
         );
     }
 
-    OnMechanismChanged(event)
-    {
+    OnMechanismChanged(event) {
         let eventTarget = event.currentTarget;
-        this.setState(lastState =>(
+        this.setState(lastState => (
             {
-                Data:{
+                Data: {
                     ...lastState.Data,
-                    Mechanism : eventTarget.value
+                    Mechanism: eventTarget.value
                 }
             })
         );
     }
 
-    OnMedicalCategoryChanged(event)
-    {
+    OnMedicalCategoryChanged(event) {
         let eventTarget = event.currentTarget;
-        this.setState(lastState =>(
+        this.setState(lastState => (
             {
-                Data:{
+                Data: {
                     ...lastState.Data,
-                    MedicalCategory : eventTarget.value
+                    MedicalCategory: eventTarget.value
                 }
             })
         );
     }
 
-    OnMedicalConflictsChaged(event)
-    {
+    OnMedicalConflictsChaged(event) {
         let eventTarget = event.currentTarget;
-        this.setState(lastState =>(
+        this.setState(lastState => (
             {
-                Data:{
+                Data: {
                     ...lastState.Data,
-                    MedicalConflicts : eventTarget.value
+                    MedicalConflicts: eventTarget.value
                 }
             })
         );
     }
 
-    OnMedicalRecommendationsChanged(event)
-    {
+    OnMedicalRecommendationsChanged(event) {
         let eventTarget = event.currentTarget;
-        this.setState(lastState =>(
+        this.setState(lastState => (
             {
-                Data:{
+                Data: {
                     ...lastState.Data,
-                    MedicalRecommendations : eventTarget.value
+                    MedicalRecommendations: eventTarget.value
                 }
             })
         );
     }
 
-    OnSideEffectsChanged(event)
-    {
+    OnSideEffectsChanged(event) {
         let eventTarget = event.currentTarget;
-        this.setState(lastState =>(
+        this.setState(lastState => (
             {
-                Data:{
+                Data: {
                     ...lastState.Data,
-                    SideEffects : eventTarget.value
+                    SideEffects: eventTarget.value
                 }
             })
         );
     }
 
-    OnUseCasesChanged(event)
-    {
+    OnUseCasesChanged(event) {
         let eventTarget = event.currentTarget;
-        this.setState(lastState =>(
+        this.setState(lastState => (
             {
-                Data:{
+                Data: {
                     ...lastState.Data,
-                    UseCases : eventTarget.value
+                    UseCases: eventTarget.value
                 }
             })
         );
     }
 
-    OnWraningsChanged(event)
-    {
+    OnWraningsChanged(event) {
         let eventTarget = event.target;
-        this.setState(lastState =>(
+        this.setState(lastState => (
             {
-                Data:{
+                Data: {
                     ...lastState.Data,
-                    Warnings : eventTarget.value
+                    Warnings: eventTarget.value
                 }
             })
         );
     }
 
-    OnPharmacokineticsChanged(event)
-    {
+    OnPharmacokineticsChanged(event) {
         let eventTarget = event.currentTarget;
-        this.setState(lastState =>(
+        this.setState(lastState => (
             {
-                Data:{
+                Data: {
                     ...lastState.Data,
-                    Pharmacokinetics : eventTarget.value
+                    Pharmacokinetics: eventTarget.value
                 }
             })
         );
     }
 
-    OnForbiddenUseCases(event)
-    {
+    OnForbiddenUseCases(event) {
         let eventTarget = event.currentTarget;
-        this.setState(lastState =>(
+        this.setState(lastState => (
             {
-                Data:{
+                Data: {
                     ...lastState.Data,
-                    ForbiddenUseCases : eventTarget.value
+                    ForbiddenUseCases: eventTarget.value
                 }
             })
         );
     }
-    
-    OnCancelButtonClicked(event)
-    {
+
+    OnCancelButtonClicked(event) {
         this.setState({
-            IsCanceled : true
+            IsCanceled: true
         });
     }
 
-    OnSaveButtonClicked(event)
-    {
+    OnSaveButtonClicked(event) {
         this.setState({
-            IsLoading : true
+            IsLoading: true
         });
         let thisObject = this;
         fetch(`${ConstantValues.WebApiBaseUrl}/${ConstantValues.DrugUpdateApi}`,
-        {
-            method : 'POST',
-            headers: {
-                'Content-Type' : 'application/json'
-            },
-            body: JSON.stringify(this.state.Data)
-        }).then(response => {
-            return response.text();
-        }).then(responseText => {
-            try{
-                return JSON.parse(responseText);
-            }
-            catch(e)
             {
-                Promise.reject({exception:e, body: responseText, type:'unparsable'})
-            }
-        }).then(data=>{
-            console.log(data);
-            thisObject.setState({
-                IsLoading : false,
-                SavedSuccessfuly : true
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(this.state.Data)
+            }).then(response => {
+                return response.text();
+            }).then(responseText => {
+                try {
+                    return JSON.parse(responseText);
+                }
+                catch (e) {
+                    Promise.reject({ exception: e, body: responseText, type: 'unparsable' })
+                }
+            }).then(data => {
+                console.log(data);
+                thisObject.setState({
+                    IsLoading: false,
+                    SavedSuccessfuly: true
+                });
             });
-        });
     }
 
-    OnImageSelected(event)
-    {
+    OnImageSelected(event) {
         let target = event.currentTarget;
         let selectedFile = target.files[0];
-        getBase64(selectedFile).then(base64=>{
-            this.setState(lastState=>(
+        getBase64(selectedFile).then(base64 => {
+            this.setState(lastState => (
                 {
-                    Data:{
+                    Data: {
                         ...lastState.Data,
-                        ImageData : base64,
-                        ImageFileName : selectedFile.name
+                        ImageData: base64,
+                        ImageFileName: selectedFile.name
                     }
                 }
             ));
         });
-          
+
     }
 }
 

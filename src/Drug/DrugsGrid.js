@@ -10,7 +10,7 @@ import '../../node_modules/@syncfusion/ej2-navigations/styles/bootstrap.css';
 import '../../node_modules/@syncfusion/ej2-popups/styles/bootstrap.css';
 import '../../node_modules/@syncfusion/ej2-splitbuttons/styles/bootstrap.css';
 import "../../node_modules/@syncfusion/ej2-react-grids/styles/bootstrap.css";
-import { NonIdealState, Button, Alert, Toaster, Spinner, NumericInput } from '@blueprintjs/core';
+import { NonIdealState, Button, Alert, Toaster, Spinner } from '@blueprintjs/core';
 import { Redirect } from 'react-router-dom';
 import AuthenticationService from '../AuthenticationService';
 import dotnetify from 'dotnetify';
@@ -18,7 +18,7 @@ class DrugsGrid extends Component {
     constructor(props) {
         super(props);
         let authHeader = { Authorization: `Bearer ${AuthenticationService.GetAuthToken()}` };
-        this.vm = dotnetify.react.connect("SearchViewModel", this,
+        this.vm = dotnetify.react.connect("DrugsSearchViewModel", this,
             {
                 headers: authHeader
             });
