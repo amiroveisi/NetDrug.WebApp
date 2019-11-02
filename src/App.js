@@ -16,6 +16,7 @@ import MedicalProductEdit from './MedicalProduct/MedicalProductEdit';
 import dotnetify from 'dotnetify';
 import signalr from 'dotnetify/dist/signalR-netfx';
 import './Content/Css/netdrug.css';
+import './Content/Css/netdrug.less';
 
 
 class App extends Component {
