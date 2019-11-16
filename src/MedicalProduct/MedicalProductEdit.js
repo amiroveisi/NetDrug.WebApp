@@ -77,6 +77,7 @@ class MedicalProductEdit extends Component {
             {
                 Images: updatedImages
             });
+            console.log(updatedImages);
     }
     OnImageSelected(event) {
 
@@ -113,7 +114,7 @@ class MedicalProductEdit extends Component {
                     console.log(image);
                     if (image.ImageData || (image.ImageFileName && image.ImageFileName !== "")) {
                         return (<FormGroup label="Image:" key={i}>
-                            <img src={image.ImageData || `${ConstantValues.WebApiBaseUrl}/images/${image.ImageFileName}`} alt={this.state.Data.LatinName}
+                            <img src={image.ImageData || `${ConstantValues.WebApiBaseUrl}/images/medicalproducts/${image.ImageFileName}`} alt={this.state.Data.LatinName}
                                 width="200" height="200" />
 
                             <Button className="ml-2" disabled={false} intent="danger" icon="delete" minimal={true} style={{ verticalAlign: 'baseline' }}
@@ -258,7 +259,7 @@ class MedicalProductEdit extends Component {
                     'Content-Type': 'application/json',
                     'Authorization': `Bearer ${AuthenticationService.GetAuthToken()}`
                 },
-                body: JSON.stringify(this.state.Data)
+                body: JSON.stringify({...this.state.Data, ImageInfos : this.state.Images})
             }).then(response => {
                 return response.text();
             }).then(responseText => {

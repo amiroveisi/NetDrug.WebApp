@@ -30,5 +30,6 @@ export class MedicalProduct
         this.Material = '';
         this.Code = '';
         this.Id = '';
+        
     }
 }
